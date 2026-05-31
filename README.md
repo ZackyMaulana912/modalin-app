@@ -21,9 +21,7 @@ ModalIn adalah sistem *alternative credit scoring* berbasis AI untuk UMKM yang t
 | Nama | Role |
 |------|------|
 | Zacky Maulana | Data Scientist |
-| Depa | Backend Developer |
 | Andy | AI Engineer |
-| Venerdi | Frontend Developer |
 
 ---
 
