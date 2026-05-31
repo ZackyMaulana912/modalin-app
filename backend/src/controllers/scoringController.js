@@ -1,6 +1,6 @@
 const User = require("../models/User");
 
-const AI_API_URL = "https://web-production-e9d64.up.railway.app";
+const AI_API_URL = "https://spectacular-joy-production-0e13.up.railway.app";
 
 const toNumber = (str) => {
   if (!str) return 0;
