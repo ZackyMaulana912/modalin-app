@@ -6,7 +6,7 @@ ModalIn adalah sistem *alternative credit scoring* berbasis AI untuk UMKM yang t
 
 ---
 
-## 🚀 Demo
+##  Demo
 
 | Layanan | URL |
 |---------|-----|
@@ -16,7 +16,7 @@ ModalIn adalah sistem *alternative credit scoring* berbasis AI untuk UMKM yang t
 
 ---
 
-## 👥 Tim
+##  Tim
 
 | Nama | Role |
 |------|------|
@@ -27,7 +27,7 @@ ModalIn adalah sistem *alternative credit scoring* berbasis AI untuk UMKM yang t
 
 ---
 
-## 🏗️ Arsitektur
+##  Arsitektur
 
 ```
 Frontend (Vercel)
@@ -39,7 +39,7 @@ AI Model API (Railway)
 
 ---
 
-## 📁 Struktur Repositori
+##  Struktur Repositori
 
 ```
 modalin-app/
@@ -53,7 +53,7 @@ modalin-app/
 
 ---
 
-## ⚙️ Teknologi
+##  Teknologi
 
 **Frontend**
 - React 18, TypeScript, Vite
@@ -79,7 +79,7 @@ modalin-app/
 
 ---
 
-## 🔧 Cara Menjalankan Lokal
+##  Cara Menjalankan Lokal
 
 ### Frontend
 ```bash
@@ -115,7 +115,7 @@ streamlit run app.py
 
 ---
 
-## 🔑 Environment Variables
+##  Environment Variables
 
 ### Backend (`.env`)
 ```
@@ -135,7 +135,7 @@ VITE_API_URL=https://modalin-app-production-21a2.up.railway.app/api
 
 ---
 
-## 📊 Fitur Utama
+##  Fitur Utama
 
 - **AI Credit Scoring** — Skor kredit 100–900 berbasis model neural network
 - **Analisis 5C** — Character, Capacity, Capital, Condition
@@ -146,6 +146,6 @@ VITE_API_URL=https://modalin-app-production-21a2.up.railway.app/api
 
 ---
 
-## 📄 Lisensi
+##  Lisensi
 
 Proyek ini dibuat untuk keperluan akademik Coding Camp 2026 DBS Foundation.
