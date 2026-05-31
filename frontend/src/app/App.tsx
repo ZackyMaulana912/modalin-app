@@ -2747,6 +2747,19 @@ function RekomendasiPage({ profile, onNavigate, onLogout, photoUrl }: { profile:
     localStorage.setItem("modalin_rekomendasi_connected", JSON.stringify(connected));
   }, [connected]);
 
+  const [toast, setToast] = useState<{ msg: string; visible: boolean }>({ msg: "", visible: false });
+  const [bonusTotal, setBonusTotal] = useState<number>(() => {
+    try {
+      const saved = localStorage.getItem("modalin_bonus_total");
+      return saved ? parseInt(saved) : 0;
+    } catch { return 0; }
+  });
+
+  const showToast = (msg: string) => {
+    setToast({ msg, visible: true });
+    setTimeout(() => setToast({ msg: "", visible: false }), 2500);
+  };
+
   const [rekomendasiData, setRekomendasiData] = useState<any>(null);
 
 useEffect(() => {
@@ -2919,12 +2932,28 @@ useEffect(() => {
                 <div className="flex items-center gap-3 shrink-0">
                   <button
                     onClick={() => {
-                    setConnected(prev => {
-                      const next = { ...prev, [id]: !prev[id] };
-                      localStorage.setItem("modalin_rekomendasi_connected", JSON.stringify(next));
-                      return next;
-                    });
-                  }}
+                      setConnected(prev => {
+                        const next = { ...prev, [id]: !prev[id] };
+                        localStorage.setItem("modalin_rekomendasi_connected", JSON.stringify(next));
+                        if (!prev[id]) {
+                          const pts = parseInt(credit.replace(/\D/g, "")) || 5;
+                          setBonusTotal(b => {
+                            const newBonus = b + pts;
+                            localStorage.setItem("modalin_bonus_total", String(newBonus));
+                            return newBonus;
+                          });
+                          showToast("Skor meningkat " + credit + " poin! 🎉");
+                        } else {
+                          const pts = parseInt(credit.replace(/\D/g, "")) || 5;
+                          setBonusTotal(b => {
+                            const newBonus = Math.max(0, b - pts);
+                            localStorage.setItem("modalin_bonus_total", String(newBonus));
+                            return newBonus;
+                          });
+                        }
+                        return next;
+                      });
+                    }}
                     className={`${font} font-semibold text-[15px] text-white rounded-[6px] px-5 py-2 shadow transition-colors ${isDone ? "bg-[#006b55]" : "bg-[#2f6ab7] hover:bg-[#1e5aa0]"}`}
                   >
                     Hubungkan
@@ -2937,7 +2966,23 @@ useEffect(() => {
             );
           })}
         </motion.div>
+
+        {/* Bonus total badge */}
+        {bonusTotal > 0 && (
+          <div className={`${font} mt-4 inline-flex items-center gap-2 bg-[#e6faf5] border border-[#51f9cd] rounded-full px-5 py-2`}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="#006b55"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <span className="text-[#006b55] font-semibold text-[14px]">Total Bonus Aktif: +{bonusTotal} Poin Skor</span>
+          </div>
+        )}
       </main>
+
+      {/* Toast notification */}
+      {toast.visible && (
+        <div className="fixed bottom-8 right-8 z-50 bg-[#006b55] text-white px-6 py-3 rounded-[12px] shadow-lg flex items-center gap-3 animate-fade-in">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+          <span className={`${font} font-semibold text-[15px]`}>{toast.msg}</span>
+        </div>
+      )}
     </div>
   );
 }
@@ -3003,7 +3048,7 @@ export default function App() {
           if (savedPhoto && savedPhoto.startsWith("data:image")) {
             setPhotoUrl(savedPhoto);
           } else if (user.fotoProfil) {
-            setPhotoUrl(`${(import.meta.env.VITE_API_URL || "https://modalin-app-production.up.railway.app/api").replace("/api","")}/uploads/${user.fotoProfil}`);
+            setPhotoUrl(`https://modalin-app-production.up.railway.app/uploads/${user.fotoProfil}`);
           }
           const savedPage = localStorage.getItem("modalin_page") as Page;
           const targetPage = savedPage || "dashboard";
@@ -3144,7 +3189,7 @@ export default function App() {
           setUserProfile((p) => ({ ...p, ...user }));
           if (user.fotoProfil) {
             console.log("fotoProfil dari backend:", user.fotoProfil);
-            const fotoUrl = `${(import.meta.env.VITE_API_URL || "https://modalin-app-production.up.railway.app/api").replace("/api","")}/uploads/${user.fotoProfil}`;
+            const fotoUrl = `https://modalin-app-production.up.railway.app/uploads/${user.fotoProfil}`;
             console.log("fotoUrl:", fotoUrl);
             // Load foto dari backend lalu simpan ke localStorage sebagai base64
             fetch(fotoUrl)
