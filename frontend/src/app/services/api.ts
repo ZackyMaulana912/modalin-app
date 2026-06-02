@@ -1,119 +1,82 @@
-// ============================================================
-// api.ts — Semua pemanggilan ke ModalIn Backend
-// Base URL backend - set via environment variable VITE_API_URL
-// ============================================================
+// Stub API service — replace these with real fetch calls once backend is ready.
+// Base URL is read from VITE_API_BASE_URL in .env.local
 
-const BASE_URL = import.meta.env.VITE_API_URL || "https://modalin-app-production.up.railway.app/api";
+const BASE = import.meta.env.VITE_API_BASE_URL ?? "";
 
-// ── Helper: ambil token dari localStorage ───────────────────
-const getToken = () => localStorage.getItem("modalin_token");
-
-// ── Helper: request dengan JSON ─────────────────────────────
-async function request(path: string, options: RequestInit = {}) {
-  const token = getToken();
-  const res = await fetch(`${BASE_URL}${path}`, {
-    ...options,
+async function post<T>(path: string, body: unknown): Promise<T> {
+  const token = localStorage.getItem("modelin_token");
+  const res = await fetch(`${BASE}${path}`, {
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      ...options.headers,
     },
+    body: JSON.stringify(body),
   });
-  const data = await res.json();
-  if (data.status === "error") throw new Error(data.message);
-  return data;
+  const json = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(json?.message ?? `HTTP ${res.status}`);
+  return json as T;
 }
 
-// ── Helper: request multipart (untuk upload file) ───────────
-async function requestForm(path: string, formData: FormData, method = "POST") {
-  const token = getToken();
-  const res = await fetch(`${BASE_URL}${path}`, {
-    method: method,
-    headers: token ? { Authorization: `Bearer ${token}` } : {},
-    body: formData,
+async function put<T>(path: string, body: unknown): Promise<T> {
+  const token = localStorage.getItem("modelin_token");
+  const res = await fetch(`${BASE}${path}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+    body: JSON.stringify(body),
   });
-  const data = await res.json();
-  if (data.status === "error") throw new Error(data.message);
-  return data;
+  const json = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(json?.message ?? `HTTP ${res.status}`);
+  return json as T;
 }
 
-// ══════════════════════════════════════════════════════════════
-// AUTH
-// ══════════════════════════════════════════════════════════════
+// ── Auth ──────────────────────────────────────────────────────────────────────
 
-export async function apiRegister(payload: {
+export async function apiRegister(data: {
   nik: string;
   nama: string;
   email: string;
   password: string;
 }) {
-  const data = await request("/auth/register", {
-    method: "POST",
-    body: JSON.stringify(payload),
-  });
-  localStorage.setItem("modalin_token", data.data.token);
-  return data.data.user;
+  return post<{ token: string; user: unknown }>("/auth/register", data);
 }
 
-export async function apiLogin(payload: { email: string; password: string }) {
-  const data = await request("/auth/login", {
-    method: "POST",
-    body: JSON.stringify(payload),
-  });
-  localStorage.setItem("modalin_token", data.data.token);
-  return data.data.user; // berisi semua data profil user
+export async function apiLogin(data: { email: string; password: string }) {
+  return post<{ token: string; user: unknown }>("/auth/login", data);
 }
 
-export async function apiForgotPassword(email: string) {
-  return request("/auth/forgot-password", {
-    method: "POST",
-    body: JSON.stringify({ email }),
-  });
+export async function apiForgotPassword(data: { email: string }) {
+  return post<{ message: string }>("/auth/forgot-password", data);
 }
 
-export async function apiVerifyOTP(email: string, otp: string) {
-  const data = await request("/auth/verify-otp", {
-    method: "POST",
-    body: JSON.stringify({ email, otp }),
-  });
-  // Simpan reset token sementara untuk dipakai di halaman new-password
-  localStorage.setItem("modalin_reset_token", data.data.resetToken);
-  return data;
+export async function apiVerifyOTP(data: { email: string; otp: string }) {
+  return post<{ message: string }>("/auth/verify-otp", data);
 }
 
-export async function apiResetPassword(resetToken: string, newPassword: string) {
-  const data = await request("/auth/reset-password", {
-    method: "POST",
-    body: JSON.stringify({ resetToken, newPassword }),
-  });
-  localStorage.removeItem("modalin_reset_token");
-  return data;
+export async function apiResetPassword(data: {
+  email: string;
+  otp: string;
+  newPassword: string;
+}) {
+  return post<{ message: string }>("/auth/reset-password", data);
 }
 
-// ══════════════════════════════════════════════════════════════
-// USER PROFILE
-// ══════════════════════════════════════════════════════════════
+// ── Profile ───────────────────────────────────────────────────────────────────
 
-export async function apiGetProfile() {
-  const data = await request("/user/profile");
-  return data.data.user;
-}
-
-export async function apiUpdatePersonal(payload: {
+export async function apiUpdatePersonal(data: {
   nik: string;
   nama: string;
   email: string;
   telepon: string;
   alamat: string;
 }) {
-  const data = await request("/user/profile/personal", {
-    method: "PUT",
-    body: JSON.stringify(payload),
-  });
-  return data.data.user;
+  return put<{ message: string }>("/profile/personal", data);
 }
 
-export async function apiUpdateBusiness(payload: {
+export async function apiUpdateBusiness(data: {
   identitasUsaha: string;
   namaPemilik: string;
   jenisUsaha: string;
@@ -125,80 +88,60 @@ export async function apiUpdateBusiness(payload: {
   totalAset: string;
   frekuensiTransaksi: string;
 }) {
-  const data = await request("/user/profile/business", {
-    method: "PUT",
-    body: JSON.stringify(payload),
+  return put<{ message: string }>("/profile/business", data);
+}
+
+export async function apiChangePassword(data: {
+  oldPassword: string;
+  newPassword: string;
+}) {
+  return put<{ message: string }>("/auth/change-password", data);
+}
+
+// ── Scoring ───────────────────────────────────────────────────────────────────
+
+export async function apiGetScoring(): Promise<{ skor_kredit: number; status: string }> {
+  const token = localStorage.getItem("modelin_token");
+  const res = await fetch(`${BASE}/scoring`, {
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
   });
-  return data.data.user;
+  const json = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(json?.message ?? `HTTP ${res.status}`);
+  return json as { skor_kredit: number; status: string };
 }
 
-export async function apiChangePassword(passwordLama: string, passwordBaru: string) {
-  return request("/user/profile/password", {
-    method: "PUT",
-    body: JSON.stringify({ passwordLama, passwordBaru }),
+// ── Anomali Arus Kas ──────────────────────────────────────────────────────────
+
+export async function apiGetAnomali(): Promise<{ anomali: unknown[] }> {
+  const token = localStorage.getItem("modelin_token");
+  const res = await fetch(`${BASE}/anomali`, {
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
   });
+  const json = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(json?.message ?? `HTTP ${res.status}`);
+  return json as { anomali: unknown[] };
 }
 
-// ══════════════════════════════════════════════════════════════
-// UPLOAD FILE
-// ══════════════════════════════════════════════════════════════
+// ── Rekomendasi ───────────────────────────────────────────────────────────────
 
-export async function apiUploadFiles(files: File[]) {
-  const formData = new FormData();
-  files.forEach((file) => formData.append("files", file));
-  return requestForm("/upload/data", formData);
-}
-
-// ══════════════════════════════════════════════════════════════
-// SCORING
-// ══════════════════════════════════════════════════════════════
-
-export async function apiGetScoring() {
-  const data = await request("/scoring");
-  return data.data;
-}
-
-export async function apiGetAnomali() {
-  const data = await request("/scoring/anomali");
-  return data.data;
-}
-
-export async function apiGetRekomendasi() {
-  const data = await request("/scoring/rekomendasi");
-  return data.data;
-}
-
-// ══════════════════════════════════════════════════════════════
-// UTILS
-// ══════════════════════════════════════════════════════════════
-
-export function logout() {
-  localStorage.removeItem("modalin_token");
-  localStorage.removeItem("modalin_reset_token");
-}
-
-export function isLoggedIn() {
-  return !!localStorage.getItem("modalin_token");
-}
-
-export async function apiUploadFoto(file: File) {
-  const formData = new FormData();
-  formData.append("foto", file);
-  return requestForm("/user/profile/photo", formData, "PUT");
-}
-
-export async function apiHapusFoto() {
-  return request("/user/profile/photo", {
-    method: "DELETE",
+export async function apiGetRekomendasi(): Promise<unknown> {
+  const token = localStorage.getItem("modelin_token");
+  const res = await fetch(`${BASE}/rekomendasi`, {
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
   });
+  const json = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(json?.message ?? `HTTP ${res.status}`);
+  return json;
 }
 
-export async function apiGetUploadCount(): Promise<number> {
-  const token = localStorage.getItem("modalin_token");
-  const res = await fetch(`${BASE_URL}/upload/count`, {
-    headers: { Authorization: `Bearer ${token}` },
+export async function apiUploadFiles(formData: FormData) {
+  const token = localStorage.getItem("modelin_token");
+  const res = await fetch(`${BASE}/profile/upload`, {
+    method: "POST",
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+    body: formData,
   });
-  if (!res.ok) throw new Error("Gagal fetch upload count");
-  const data = await res.json();
-  return data.count ?? 0;
+  const json = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(json?.message ?? `HTTP ${res.status}`);
+  return json as { photoUrl: string };
 }

@@ -12,43 +12,41 @@ import {
 import { motion, useInView } from "motion/react";
 import { useRef, useState, useEffect } from "react";
 import { CheckCircle } from "lucide-react";
-import imgHero from "@/imports/image.png";
-import imgLogo from "@/imports/Desktop1TampilanAwal/fd0b4f116c569a774213fd4a572042d7b273ac33.png";
-import imgRegLogo from "@/imports/Desktop2PendaftaranAkun/fd0b4f116c569a774213fd4a572042d7b273ac33.png";
+import imgHero from "@/assets/images/hero.png";
+import imgLogo from "@/assets/images/logo.png";
 const svgRegPaths = {
-  p3e801e80: "M11 12C12.25 12 13.3125 11.5625 14.1875 10.6875C15.0625 9.8125 15.5 8.75 15.5 7.5C15.5 6.25 15.0625 5.1875 14.1875 4.3125C13.3125 3.4375 12.25 3 11 3C9.75 3 8.6875 3.4375 7.8125 4.3125C6.9375 5.1875 6.5 6.25 6.5 7.5C6.5 8.75 6.9375 9.8125 7.8125 10.6875C8.6875 11.5625 9.75 12 11 12ZM11 10.2C10.25 10.2 9.6125 9.9375 9.0875 9.4125C8.5625 8.8875 8.3 8.25 8.3 7.5C8.3 6.75 8.5625 6.1125 9.0875 5.5875C9.6125 5.0625 10.25 4.8 11 4.8C11.75 4.8 12.3875 5.0625 12.9125 5.5875C13.4375 6.1125 13.7 6.75 13.7 7.5C13.7 8.25 13.4375 8.8875 12.9125 9.4125C12.3875 9.9375 11.75 10.2 11 10.2ZM11 15C8.56667 15 6.35 14.3208 4.35 12.9625C2.35 11.6042 0.9 9.78333 0 7.5C0.9 5.21667 2.35 3.39583 4.35 2.0375C6.35 0.679167 8.56667 0 11 0C13.4333 0 15.65 0.679167 17.65 2.0375C19.65 3.39583 21.1 5.21667 22 7.5C21.1 9.78333 19.65 11.6042 17.65 12.9625C15.65 14.3208 13.4333 15 11 15ZM11 13C12.8833 13 14.6125 12.5042 16.1875 11.5125C17.7625 10.5208 18.9667 9.18333 19.8 7.5C18.9667 5.81667 17.7625 4.47917 16.1875 3.4875C14.6125 2.49583 12.8833 2 11 2C9.11667 2 7.3875 2.49583 5.8125 3.4875C4.2375 4.47917 3.03333 5.81667 2.2 7.5C3.03333 9.18333 4.2375 10.5208 5.8125 11.5125C7.3875 12.5042 9.11667 13 11 13Z",
+  p3e801e80: "M11 12C12.25 12C13.3125 11.5625 14.1875 10.6875C15.0625 9.8125 15.5 8.75 15.5 7.5C15.5 6.25 15.0625 5.1875 14.1875 4.3125C13.3125 3.4375 12.25 3 11 3C9.75 3 8.6875 3.4375 7.8125 4.3125C6.9375 5.1875 6.5 6.25 6.5 7.5C6.5 8.75 6.9375 9.8125 7.8125 10.6875C8.6875 11.5625 9.75 12 11 12ZM11 10.2C10.25 10.2 9.6125 9.9375 9.0875 9.4125C8.5625 8.8875 8.3 8.25 8.3 7.5C8.3 6.75 8.5625 6.1125 9.0875 5.5875C9.6125 5.0625 10.25 4.8 11 4.8C11.75 4.8 12.3875 5.0625 12.9125 5.5875C13.4375 6.1125 13.7 6.75 13.7 7.5C13.7 8.25 13.4375 8.8875 12.9125 9.4125C12.3875 9.9375 11.75 10.2 11 10.2ZM11 15C8.56667 15 6.35 14.3208 4.35 12.9625C2.35 11.6042 0.9 9.78333 0 7.5C0.9 5.21667 2.35 3.39583 4.35 2.0375C6.35 0.679167 8.56667 0 11 0C13.4333 0 15.65 0.679167 17.65 2.0375C19.65 3.39583 21.1 5.21667 22 7.5C21.1 9.78333 19.65 11.6042 17.65 12.9625C15.65 14.3208 13.4333 15 11 15ZM11 13C12.8833 13 14.6125 12.5042 16.1875 11.5125C17.7625 10.5208 18.9667 9.18333 19.8 7.5C18.9667 5.81667 17.7625 4.47917 16.1875 3.4875C14.6125 2.49583 12.8833 2 11 2C9.11667 2 7.3875 2.49583 5.8125 3.4875C4.2375 4.47917 3.03333 5.81667 2.2 7.5C3.03333 9.18333 4.2375 10.5208 5.8125 11.5125C7.3875 12.5042 9.11667 13 11 13Z",
   pd7965c0: "M0 8C0 3.58172 3.58172 0 8 0H390C394.418 0 398 3.58172 398 8V45C398 49.4183 394.418 53 390 53H7.99999C3.58171 53 0 49.4183 0 45V8Z",
 };
-import imgLoginLogo from "@/imports/Desktop2LoginAkun/fd0b4f116c569a774213fd4a572042d7b273ac33.png";
-const svgLoginPaths = {
-  p3e801e80: "M11 12C12.25 12 13.3125 11.5625 14.1875 10.6875C15.0625 9.8125 15.5 8.75 15.5 7.5C15.5 6.25 15.0625 5.1875 14.1875 4.3125C13.3125 3.4375 12.25 3 11 3C9.75 3 8.6875 3.4375 7.8125 4.3125C6.9375 5.1875 6.5 6.25 6.5 7.5C6.5 8.75 6.9375 9.8125 7.8125 10.6875C8.6875 11.5625 9.75 12 11 12ZM11 10.2C10.25 10.2 9.6125 9.9375 9.0875 9.4125C8.5625 8.8875 8.3 8.25 8.3 7.5C8.3 6.75 8.5625 6.1125 9.0875 5.5875C9.6125 5.0625 10.25 4.8 11 4.8C11.75 4.8 12.3875 5.0625 12.9125 5.5875C13.4375 6.1125 13.7 6.75 13.7 7.5C13.7 8.25 13.4375 8.8875 12.9125 9.4125C12.3875 9.9375 11.75 10.2 11 10.2ZM11 15C8.56667 15 6.35 14.3208 4.35 12.9625C2.35 11.6042 0.9 9.78333 0 7.5C0.9 5.21667 2.35 3.39583 4.35 2.0375C6.35 0.679167 8.56667 0 11 0C13.4333 0 15.65 0.679167 17.65 2.0375C19.65 3.39583 21.1 5.21667 22 7.5C21.1 9.78333 19.65 11.6042 17.65 12.9625C15.65 14.3208 13.4333 15 11 15ZM11 13C12.8833 13 14.6125 12.5042 16.1875 11.5125C17.7625 10.5208 18.9667 9.18333 19.8 7.5C18.9667 5.81667 17.7625 4.47917 16.1875 3.4875C14.6125 2.49583 12.8833 2 11 2C9.11667 2 7.3875 2.49583 5.8125 3.4875C4.2375 4.47917 3.03333 5.81667 2.2 7.5C3.03333 9.18333 4.2375 10.5208 5.8125 11.5125C7.3875 12.5042 9.11667 13 11 13Z",
-  pd7965c0: "M0 8C0 3.58172 3.58172 0 8 0H390C394.418 0 398 3.58172 398 8V45C398 49.4183 394.418 53 390 53H7.99999C3.58171 53 0 49.4183 0 45V8Z",
-};
-import imgNavHome from "@/imports/Desktop7ProfileDanUploadDataBaru/934175e29c9f2adbdc9a4bbe59dc185dbdf3607e.png";
-import imgNavScoring from "@/imports/Desktop7ProfileDanUploadDataBaru/d6924ab92e5c40ef4ff34427057401bebc971353.png";
-import imgNavAnomali from "@/imports/Desktop7ProfileDanUploadDataBaru/094481cc268187fc71f740f48ec7b503c71d29cf.png";
-import imgNavRekom from "@/imports/Desktop7ProfileDanUploadDataBaru/f82d4a13f2643de6f2e98148aca7fd80e2405665.png";
-import imgPerson from "@/imports/Desktop7ProfileDanUploadDataBaru/91959fb6d52ab8c2f130bd59aa30e4ac1d673513.png";
-import imgEditIcon from "@/imports/Desktop7ProfileDanUploadDataBaru/7b1b202e52c823c2e873936c8297563ee3e3ee13.png";
-import imgUploadIcon from "@/imports/Desktop7ProfileDanUploadDataBaru/5a588f2ce49190a0cc36b267a00251132116cb05.png";
-import imgBoxImportant from "@/imports/Desktop7ProfileDanUploadDataBaru/af753f6404a42ba3974a7d09ca444cd6c6008f19.png";
-import imgForward from "@/imports/Desktop7ProfileDanUploadDataBaru/b3146676f276842a5ffae24509d3dc7aaf35e8f7.png";
-import imgHighImportance from "@/imports/Desktop8EditInformasiPribadi/113af61fbb9bca6b41b2f052a7465d58e0279364.png";
-import imgMarket from "@/imports/Desktop1TampilanAwal/d9b77dad0d3a1c320fad775177a1392442c54c1c.png";
-import imgVerificationBadge from "@/imports/Desktop1TampilanAwal/0439fa67e13500f0e67c0ee936b4ed28e993991c.png";
-import imgFolder from "@/imports/Desktop1TampilanAwal/8caf55fdb3a7cc287aa8655966f961f6749d979a.png";
-import imgLock from "@/imports/Desktop1TampilanAwal/bdb44e5214792d9ae62d1f2cc0afeb14d04572d8.png";
-import imgComboChart from "@/imports/Desktop1TampilanAwal/e10e58a43d55297ff4e44edff62be931d6102086.png";
+const svgLoginPaths = svgRegPaths;
+import imgNavHome from "@/assets/icons/nav-home.png";
+import imgNavScoring from "@/assets/icons/nav-scoring.png";
+import imgNavAnomali from "@/assets/icons/nav-anomali.png";
+import imgNavRekom from "@/assets/icons/nav-rekom.png";
+import imgNavAi from "@/assets/icons/nav-ai.png";
+import imgArrowUp from "@/assets/icons/arrow-up.png";
+import imgArrowDown from "@/assets/icons/arrow-down.png";
+import imgPerson from "@/assets/images/person.png";
+import imgEditIcon from "@/assets/icons/edit.png";
+import imgUploadIcon from "@/assets/icons/upload.png";
+import imgBoxImportant from "@/assets/icons/box-important.png";
+import imgForward from "@/assets/icons/forward.png";
+import imgHighImportance from "@/assets/icons/high-importance.png";
+import imgMarket from "@/assets/images/market.png";
+import imgVerificationBadge from "@/assets/icons/verification-badge.png";
+import imgFolder from "@/assets/icons/folder.png";
+import imgLock from "@/assets/icons/lock.png";
+import imgComboChart from "@/assets/icons/combo-chart.png";
 const svgPaths = {
   p1a406200: "M12.175 9H0V7H12.175L6.575 1.4L8 0L16 8L8 16L6.575 14.6L12.175 9Z",
 };
-import imgTipsLight from "@/imports/Desktop3Dashboard/63b0fcaffb9336da13ac964ac3ed12351117b38d.png";
-import imgButuhModal from "@/imports/Desktop3Dashboard/1772fe38fa56a5128ab69677b9ebf4df8d28bf8c.png";
+import imgTipsLight from "@/assets/icons/tips-light.png";
+import imgButuhModal from "@/assets/images/butuh-modal.png";
 const svgDashPaths = {
   p1e3fa6c0: "M12.7071 8.07107C13.0976 7.68054 13.0976 7.04738 12.7071 6.65685L6.34315 0.292893C5.95262 -0.097631 5.31946 -0.097631 4.92893 0.292893C4.53841 0.683418 4.53841 1.31658 4.92893 1.70711L10.5858 7.36396L4.92893 13.0208C4.53841 13.4113 4.53841 14.0445 4.92893 14.435C5.31946 14.8256 5.95262 14.8256 6.34315 14.435L12.7071 8.07107ZM0 7.36396V8.36396H12V7.36396V6.36396H0V7.36396Z",
-  p3e801e80: "M11 12C12.25 12 13.3125 11.5625 14.1875 10.6875C15.0625 9.8125 15.5 8.75 15.5 7.5C15.5 6.25 15.0625 5.1875 14.1875 4.3125C13.3125 3.4375 12.25 3 11 3C9.75 3 8.6875 3.4375 7.8125 4.3125C6.9375 5.1875 6.5 6.25 6.5 7.5C6.5 8.75 6.9375 9.8125 7.8125 10.6875C8.6875 11.5625 9.75 12 11 12ZM11 10.2C10.25 10.2 9.6125 9.9375 9.0875 9.4125C8.5625 8.8875 8.3 8.25 8.3 7.5C8.3 6.75 8.5625 6.1125 9.0875 5.5875C9.6125 5.0625 10.25 4.8 11 4.8C11.75 4.8 12.3875 5.0625 12.9125 5.5875C13.4375 6.1125 13.7 6.75 13.7 7.5C13.7 8.25 13.4375 8.8875 12.9125 9.4125C12.3875 9.9375 11.75 10.2 11 10.2ZM11 15C8.56667 15 6.35 14.3208 4.35 12.9625C2.35 11.6042 0.9 9.78333 0 7.5C0.9 5.21667 2.35 3.39583 4.35 2.0375C6.35 0.679167 8.56667 0 11 0C13.4333 0 15.65 0.679167 17.65 2.0375C19.65 3.39583 21.1 5.21667 22 7.5C21.1 9.78333 19.65 11.6042 17.65 12.9625C15.65 14.3208 13.4333 15 11 15ZM11 13C12.8833 13 14.6125 12.5042 16.1875 11.5125C17.7625 10.5208 18.9667 9.18333 19.8 7.5C18.9667 5.81667 17.7625 4.47917 16.1875 3.4875C14.6125 2.49583 12.8833 2 11 2C9.11667 2 7.3875 2.49583 5.8125 3.4875C4.2375 4.47917 3.03333 5.81667 2.2 7.5C3.03333 9.18333 4.2375 10.5208 5.8125 11.5125C7.3875 12.5042 9.11667 13 11 13Z",
+  p3e801e80: "M11 12C12.25 12C13.3125 11.5625 14.1875 10.6875C15.0625 9.8125 15.5 8.75 15.5 7.5C15.5 6.25 15.0625 5.1875 14.1875 4.3125C13.3125 3.4375 12.25 3 11 3C9.75 3 8.6875 3.4375 7.8125 4.3125C6.9375 5.1875 6.5 6.25 6.5 7.5C6.5 8.75 6.9375 9.8125 7.8125 10.6875C8.6875 11.5625 9.75 12 11 12ZM11 10.2C10.25 10.2 9.6125 9.9375 9.0875 9.4125C8.5625 8.8875 8.3 8.25 8.3 7.5C8.3 6.75 8.5625 6.1125 9.0875 5.5875C9.6125 5.0625 10.25 4.8 11 4.8C11.75 4.8 12.3875 5.0625 12.9125 5.5875C13.4375 6.1125 13.7 6.75 13.7 7.5C13.7 8.25 13.4375 8.8875 12.9125 9.4125C12.3875 9.9375 11.75 10.2 11 10.2ZM11 15C8.56667 15 6.35 14.3208 4.35 12.9625C2.35 11.6042 0.9 9.78333 0 7.5C0.9 5.21667 2.35 3.39583 4.35 2.0375C6.35 0.679167 8.56667 0 11 0C13.4333 0 15.65 0.679167 17.65 2.0375C19.65 3.39583 21.1 5.21667 22 7.5C21.1 9.78333 19.65 11.6042 17.65 12.9625C15.65 14.3208 13.4333 15 11 15ZM11 13C12.8833 13 14.6125 12.5042 16.1875 11.5125C17.7625 10.5208 18.9667 9.18333 19.8 7.5C18.9667 5.81667 17.7625 4.47917 16.1875 3.4875C14.6125 2.49583 12.8833 2 11 2C9.11667 2 7.3875 2.49583 5.8125 3.4875C4.2375 4.47917 3.03333 5.81667 2.2 7.5C3.03333 9.18333 4.2375 10.5208 5.8125 11.5125C7.3875 12.5042 9.11667 13 11 13Z",
 };
-import imgBCA from "@/imports/Desktop10EditInformasiPribadi-2/2862daac87d731d93ea7bdb1c37159d8b0b00d23.png";
+import imgBCA from "@/assets/images/bca.png";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 32 },
@@ -81,7 +79,7 @@ function CountUp({ to, duration = 1200, format }: { to: number; duration?: numbe
   return <>{format ? format(val) : val.toLocaleString("id-ID")}</>;
 }
 
-type Page = "home" | "register" | "login" | "forgot-password" | "verify-code" | "new-password" | "profile" | "dashboard" | "cairkan-dana" | "bayar-tagihan" | "hasil-scoring" | "anomali-arus-kas" | "rekomendasi";
+type Page = "home" | "register" | "login" | "forgot-password" | "verify-code" | "new-password" | "profile" | "dashboard" | "cairkan-dana" | "bayar-tagihan" | "hasil-scoring" | "anomali-arus-kas" | "rekomendasi" | "ai-advisor";
 
 interface UserProfile {
   nik: string;
@@ -124,21 +122,19 @@ function Navbar({ activeNav, onNavClick, onDaftar, onMasuk }: NavbarProps) {
         <div className="flex items-center gap-16">
           <button
             onClick={() => onNavClick("produk")}
-            className={`text-base font-['Plus_Jakarta_Sans',sans-serif] transition-colors ${
-              activeNav === "produk"
-                ? "text-[#006b55] font-semibold"
-                : "text-black font-normal"
-            }`}
+            className={`text-base font-['Plus_Jakarta_Sans',sans-serif] transition-colors ${activeNav === "produk"
+              ? "text-[#006b55] font-semibold"
+              : "text-black font-normal"
+              }`}
           >
             Produk
           </button>
           <button
             onClick={() => onNavClick("cara-kerja")}
-            className={`text-base font-['Plus_Jakarta_Sans',sans-serif] transition-colors ${
-              activeNav === "cara-kerja"
-                ? "text-[#006b55] font-semibold"
-                : "text-black font-normal"
-            }`}
+            className={`text-base font-['Plus_Jakarta_Sans',sans-serif] transition-colors ${activeNav === "cara-kerja"
+              ? "text-[#006b55] font-semibold"
+              : "text-black font-normal"
+              }`}
           >
             Cara Kerja
           </button>
@@ -412,17 +408,17 @@ function HowItWorks({ sectionRef, onRegister }: { sectionRef: React.RefObject<HT
 }
 
 function RegisterPage({ onBack, onLogin, onComplete }: { onBack: () => void; onLogin: () => void; onComplete: (nik: string, nama: string, email: string) => void }) {
-    const [showPassword, setShowPassword] = useState(false);
-    const [showConfirm, setShowConfirm] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const [errorMsg, setErrorMsg] = useState("");
-    const [form, setForm] = useState({
-      nik: "",
-      nama: "",
-      email: "",
-      password: "",
-      confirm: "",
-    });
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+  const [form, setForm] = useState({
+    nik: "",
+    nama: "",
+    email: "",
+    password: "",
+    confirm: "",
+  });
 
   const eyeIcon = (
     <svg width="22" height="15" viewBox="0 0 22 15" fill="none">
@@ -439,7 +435,7 @@ function RegisterPage({ onBack, onLogin, onComplete }: { onBack: () => void; onL
     >
       <div className="bg-white rounded-[12px] w-full max-w-[448px] px-[28px] py-10 flex flex-col items-center gap-0 shadow-sm">
         {/* Logo */}
-        <img src={imgRegLogo} alt="ModalIn" className="h-[47px] w-[155px] object-cover mb-6" />
+        <img src={imgLogo} alt="ModalIn" className="h-[47px] w-[155px] object-cover mb-6" />
 
         {/* Header */}
         <h1 className="font-['Plus_Jakarta_Sans',sans-serif] font-semibold text-[28px] leading-[36px] text-[#001038] text-center mb-1">
@@ -628,7 +624,7 @@ function LoginPage({ onRegister, onForgotPassword, onSuccess }: { onRegister: ()
     >
       <div className="bg-white rounded-[9px] w-full max-w-[450px] px-[28px] py-10 flex flex-col items-center shadow-sm">
         {/* Logo */}
-        <img src={imgLoginLogo} alt="ModalIn" className="h-[47px] w-[155px] object-cover mb-6" />
+        <img src={imgLogo} alt="ModalIn" className="h-[47px] w-[155px] object-cover mb-6" />
 
         {/* Header */}
         <h1 className="font-['Plus_Jakarta_Sans',sans-serif] font-semibold text-[28px] leading-[36px] text-[#001038] text-center mb-1">
@@ -745,12 +741,14 @@ function DashboardSidebar({ activePage, onNavigate, onLogout }: { activePage?: s
     { icon: imgNavScoring, label: "Hasil Scoring", page: "hasil-scoring" as Page },
     { icon: imgNavAnomali, label: "Anomali Arus Kas", page: "anomali-arus-kas" as Page },
     { icon: imgNavRekom, label: "Rekomendasi", page: "rekomendasi" as Page },
+    { icon: imgNavAi, label: "AI Advisor", page: "ai-advisor" as Page },
   ];
   const activePages: Record<string, string> = {
     "dashboard": "dashboard",
     "hasil-scoring": "hasil-scoring",
     "anomali-arus-kas": "anomali-arus-kas",
     "rekomendasi": "rekomendasi",
+    "ai-advisor": "ai-advisor",
   };
   return (
     <aside className="w-[311px] bg-[#2f6ab7] flex flex-col shrink-0 sticky top-0 h-screen">
@@ -769,11 +767,10 @@ function DashboardSidebar({ activePage, onNavigate, onLogout }: { activePage?: s
             <div
               key={label}
               onClick={() => onNavigate?.(page)}
-              className={`flex items-center gap-5 py-[18px] mx-3 px-4 rounded-[8px] cursor-pointer transition-all ${
-                isActive
-                  ? "bg-gradient-to-r from-[#00D4AA] to-[#00B08E]"
-                  : "hover:bg-white/10"
-              }`}
+              className={`flex items-center gap-5 py-[18px] mx-3 px-4 rounded-[8px] cursor-pointer transition-all ${isActive
+                ? "bg-gradient-to-r from-[#00D4AA] to-[#00B08E]"
+                : "hover:bg-white/10"
+                }`}
             >
               <img src={icon} alt="" className="size-[30px] object-contain shrink-0" />
               <span className="text-white font-semibold text-[20px] tracking-[0.7px] font-['Plus_Jakarta_Sans',sans-serif]">{label}</span>
@@ -787,9 +784,9 @@ function DashboardSidebar({ activePage, onNavigate, onLogout }: { activePage?: s
           className="flex items-center gap-4 w-full py-[14px] mx-0 px-4 rounded-[8px] hover:bg-white/10 transition-all cursor-pointer"
         >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="shrink-0">
-            <path d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            <path d="M16 17L21 12L16 7" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            <path d="M21 12H9" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M16 17L21 12L16 7" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M21 12H9" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
           <span className="text-white font-semibold text-[20px] tracking-[0.7px] font-['Plus_Jakarta_Sans',sans-serif]">Keluar</span>
         </button>
@@ -920,9 +917,8 @@ function EditPersonalInfoModal({
               }
               onSave(form);
             }}
-            className={`h-[48px] px-8 rounded-[8px] font-['Plus_Jakarta_Sans',sans-serif] font-bold text-[16px] text-white transition-colors ${
-              allFilled ? "bg-[#016b55] cursor-pointer" : "bg-[#a0a0a0] cursor-not-allowed"
-            }`}
+            className={`h-[48px] px-8 rounded-[8px] font-['Plus_Jakarta_Sans',sans-serif] font-bold text-[16px] text-white transition-colors ${allFilled ? "bg-[#016b55] cursor-pointer" : "bg-[#a0a0a0] cursor-not-allowed"
+              }`}
           >
             Simpan Perubahan
           </motion.button>
@@ -1132,9 +1128,8 @@ function EditBusinessInfoModal({
               }
               onSave(form);
             }}
-            className={`h-[48px] px-8 rounded-[8px] font-['Plus_Jakarta_Sans',sans-serif] font-bold text-[16px] text-white transition-colors ${
-              allFilled ? "bg-[#016b55] cursor-pointer" : "bg-[#a0a0a0] cursor-not-allowed"
-            }`}
+            className={`h-[48px] px-8 rounded-[8px] font-['Plus_Jakarta_Sans',sans-serif] font-bold text-[16px] text-white transition-colors ${allFilled ? "bg-[#016b55] cursor-pointer" : "bg-[#a0a0a0] cursor-not-allowed"
+              }`}
           >
             Simpan Perubahan
           </motion.button>
@@ -1258,9 +1253,8 @@ function ChangePasswordModal({ onClose }: { onClose: () => void }) {
                   setErrorMsg(err instanceof Error ? err.message : "Gagal ubah password.");
                 }
               }}
-              className={`h-[48px] px-8 rounded-[8px] font-['Plus_Jakarta_Sans',sans-serif] font-bold text-[16px] text-white transition-colors ${
-                allValid ? "bg-[#016b55] cursor-pointer" : "bg-[#a0a0a0] cursor-not-allowed"
-              }`}
+              className={`h-[48px] px-8 rounded-[8px] font-['Plus_Jakarta_Sans',sans-serif] font-bold text-[16px] text-white transition-colors ${allValid ? "bg-[#016b55] cursor-pointer" : "bg-[#a0a0a0] cursor-not-allowed"
+                }`}
             >
               Simpan Perubahan
             </motion.button>
@@ -1272,7 +1266,7 @@ function ChangePasswordModal({ onClose }: { onClose: () => void }) {
 }
 
 // ── Dashboard page ────────────────────────────────────────────────────────────
-function DashboardPage({ profile, onCairanDana, onBayarTagihan, onNavigate, loanData, onLogout, photoUrl }: { 
+function DashboardPage({ profile, onCairanDana, onBayarTagihan, onNavigate, loanData, onLogout, photoUrl }: {
   profile: UserProfile;
   onCairanDana: () => void;
   onBayarTagihan: () => void;
@@ -1295,11 +1289,11 @@ function DashboardPage({ profile, onCairanDana, onBayarTagihan, onNavigate, loan
           setSkorReal(data.skor_kredit ?? 0);
           setStatusReal(
             data.skor_kredit === 0 ? "Belum Ada Scoring" :
-            data.status === "Layak" ? "Layak Kredit" :
-            data.status === "Layak Bersyarat" ? "Layak Bersyarat" : "Tidak Layak Kredit"
+              data.status === "Layak" ? "Layak Kredit" :
+                data.status === "Layak Bersyarat" ? "Layak Bersyarat" : "Tidak Layak Kredit"
           );
         })
-        .catch(() => {})
+        .catch(() => { })
         .finally(() => setLoadingDash(false));
     });
   }, []);
@@ -1333,7 +1327,7 @@ function DashboardPage({ profile, onCairanDana, onBayarTagihan, onNavigate, loan
 
   const scoringRows = showAllScoring ? allScoringRows : allScoringRows.slice(0, 3);
   return (
-    <div className="flex min-h-screen bg-[#f8f9ff]">
+    <div className="flex h-screen overflow-hidden bg-[#f8f9ff]">
       <DashboardSidebar activePage="dashboard" onNavigate={onNavigate} onLogout={onLogout} />
       <main className="flex-1 px-10 py-8 overflow-y-auto">
         <DashboardHeader profile={profile} onNavigate={onNavigate} photoUrl={photoUrl} />
@@ -1347,17 +1341,16 @@ function DashboardPage({ profile, onCairanDana, onBayarTagihan, onNavigate, loan
               <span className={`${font} font-extrabold text-[36px] text-[#001038] leading-none`}>
                 {loadingDash ? "..." : <CountUp to={skorReal} />}
               </span>
-              <span className={`${font} font-bold text-[10px] rounded-full px-2 py-1 ${
-                loadingDash ? "text-[#44464f] bg-[#e0e0e0]" :
+              <span className={`${font} font-bold text-[10px] rounded-full px-2 py-1 ${loadingDash ? "text-[#44464f] bg-[#e0e0e0]" :
                 skorReal === 0 ? "text-[#44464f] bg-[#e0e0e0]" :
-                skorReal >= 600 ? "text-[#007059] bg-[#51f9cd]" :
-                skorReal >= 500 ? "text-[#5a4000] bg-[#ffd966]" :
-                "text-white bg-[#ba1a1a]"
-              }`}>
-              {loadingDash ? "..." :
-                skorReal === 0 ? "Belum Ada Data" :
-                skorReal >= 600 ? "Layak Kredit" :
-                skorReal >= 500 ? "Layak Bersyarat" : "Tidak Layak Kredit"}
+                  skorReal >= 600 ? "text-[#007059] bg-[#51f9cd]" :
+                    skorReal >= 500 ? "text-[#5a4000] bg-[#ffd966]" :
+                      "text-white bg-[#ba1a1a]"
+                }`}>
+                {loadingDash ? "..." :
+                  skorReal === 0 ? "Belum Ada Data" :
+                    skorReal >= 600 ? "Layak Kredit" :
+                      skorReal >= 500 ? "Layak Bersyarat" : "Tidak Layak Kredit"}
               </span>
             </div>
           </motion.div>
@@ -1375,12 +1368,12 @@ function DashboardPage({ profile, onCairanDana, onBayarTagihan, onNavigate, loan
           <motion.div variants={fadeUp} className="bg-white rounded-[7px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] px-5 pt-4 pb-5">
             <p className={`${font} font-semibold text-[14px] text-[#44464f] tracking-[0.7px] mb-2`}>Limit Tersedia</p>
             <p className={`${font} font-semibold text-[20px] text-[#001038] leading-none mb-2`}>
-            {loadingDash ? "..." : `Rp ${(
-            skorReal >= 700 ? 50_000_000 :
-            skorReal >= 600 ? 25_000_000 :
-            skorReal >= 500 ? 10_000_000 : 0
-            ).toLocaleString("id-ID")}`}
-                      </p>
+              {loadingDash ? "..." : `Rp ${(
+                skorReal >= 700 ? 50_000_000 :
+                  skorReal >= 600 ? 25_000_000 :
+                    skorReal >= 500 ? 10_000_000 : 0
+              ).toLocaleString("id-ID")}`}
+            </p>
             {skorReal >= 500 ? (
               <button onClick={onCairanDana} className={`${font} font-semibold text-[12px] text-[#006b55] flex items-center gap-1`}>
                 Cairkan Dana {arrowSvg}
@@ -1451,10 +1444,10 @@ function DashboardPage({ profile, onCairanDana, onBayarTagihan, onNavigate, loan
               <p className={`${font} font-normal text-[16px] text-[#b0bee8] mb-6`}>
                 {skorReal >= 500
                   ? `Berdasarkan skor terbaru Anda, Anda memenuhi syarat untuk pinjaman mikro KUR hingga Rp ${(
-                  skorReal >= 700 ? 50_000_000 :
-                  skorReal >= 600 ? 25_000_000 :
-                  skorReal >= 500 ? 10_000_000 : 0
-                    ).toLocaleString("id-ID")}.`
+                    skorReal >= 700 ? 50_000_000 :
+                      skorReal >= 600 ? 25_000_000 :
+                        skorReal >= 500 ? 10_000_000 : 0
+                  ).toLocaleString("id-ID")}.`
                   : "Skor kredit Anda belum memenuhi syarat minimum. Tingkatkan skor Anda dengan rutin mengupload data transaksi."}
               </p>
               <motion.button
@@ -1501,7 +1494,7 @@ function CairanDanaPage({ onBack, onNavigate, onConfirmLoan, profile, onLogout }
           const skor = data.skor_kredit ?? 0;
           setLimitTersedia(skor >= 700 ? 50_000_000 : skor >= 600 ? 25_000_000 : skor >= 500 ? 10_000_000 : 0);
         })
-        .catch(() => {});
+        .catch(() => { });
     });
   }, []);
 
@@ -1528,7 +1521,7 @@ function CairanDanaPage({ onBack, onNavigate, onConfirmLoan, profile, onLogout }
   const rowValue = `${font} font-medium text-[16px] text-[#001038]`;
 
   return (
-    <div className="flex min-h-screen bg-[#f8f9ff]">
+    <div className="flex h-screen overflow-hidden bg-[#f8f9ff]">
       <DashboardSidebar activePage="dashboard" onNavigate={onNavigate} onLogout={onLogout} />
       <main className="flex-1 px-10 py-8 overflow-y-auto">
         <div className="max-w-[672px]">
@@ -1570,11 +1563,10 @@ function CairanDanaPage({ onBack, onNavigate, onConfirmLoan, profile, onLogout }
                     <button
                       key={d}
                       onClick={() => setLamaBulan(d)}
-                      className={`${font} font-semibold text-[14px] tracking-[0.7px] px-5 h-[38px] rounded-full transition-colors ${
-                        d === lamaBulan
-                          ? "bg-[#016b55] text-white"
-                          : "border border-[#c5c6d0] text-[#7d8390]"
-                      }`}
+                      className={`${font} font-semibold text-[14px] tracking-[0.7px] px-5 h-[38px] rounded-full transition-colors ${d === lamaBulan
+                        ? "bg-[#016b55] text-white"
+                        : "border border-[#c5c6d0] text-[#7d8390]"
+                        }`}
                     >
                       {d} Bulan
                     </button>
@@ -1665,7 +1657,7 @@ function BayarTagihanPage({ loanData, onBack, onNavigate, onClearLoan, onLogout 
   const rowValue = `${font} font-medium text-[16px] text-[#001038]`;
 
   return (
-    <div className="flex min-h-screen bg-[#f8f9ff]">
+    <div className="flex h-screen overflow-hidden bg-[#f8f9ff]">
       <DashboardSidebar activePage="dashboard" onNavigate={onNavigate} onLogout={onLogout} />
       <main className="flex-1 px-10 py-8 overflow-y-auto">
         <div className="max-w-[672px]">
@@ -1689,8 +1681,8 @@ function BayarTagihanPage({ loanData, onBack, onNavigate, onClearLoan, onLogout 
                   <div className="text-right">
                     <p className={`${font} font-semibold text-[14px] text-[#bfc7e0] tracking-[0.7px] uppercase mb-1`}>JATUH TEMPO</p>
                     <p className={`${font} font-bold text-[16px] text-white`}>
-                     {new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })}
-                  </p>
+                      {new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })}
+                    </p>
                   </div>
                 </div>
                 <p className={`${font} font-semibold text-[14px] text-[#bfc7e0] mb-1`}>Total Tagihan</p>
@@ -1817,7 +1809,7 @@ function ProfilePage({ profile, photoUrl, onPhotoChange, onUpdatePersonal, onUpd
   const cardClass = "bg-white rounded-[12px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] p-6";
 
   return (
-    <div className="flex min-h-screen bg-[#f8f9ff]">
+    <div className="flex h-screen overflow-hidden bg-[#f8f9ff]">
       <DashboardSidebar activePage="profile" onNavigate={onNavigate} onLogout={onLogout} />
 
       <main className="flex-1 px-10 py-8 overflow-y-auto">
@@ -1992,23 +1984,23 @@ function ProfilePage({ profile, photoUrl, onPhotoChange, onUpdatePersonal, onUpd
                   setUploadLoading(true);
                   setUploadMsg("");
                   try {
-                  const result = await apiUploadFiles(files);
-                  setUploadMsg(`✅ ${result.data.files.length} file berhasil diupload!`);
-                  const extracted = result.data.dataTerekstrak;
-                  if (extracted) {
-                    onUpdateBusiness({
-                      identitasUsaha: profile.identitasUsaha,
-                      namaPemilik: profile.namaPemilik,
-                      jenisUsaha: profile.jenisUsaha,
-                      alamatUsaha: profile.alamatUsaha,
-                      lamaBerdiri: profile.lamaBerdiri,
-                      omzetBulanan: extracted.omzetBulanan ?? profile.omzetBulanan,
-                      pengeluaranBulanan: extracted.pengeluaranBulanan ?? profile.pengeluaranBulanan,
-                      totalHutang: extracted.totalHutang ?? profile.totalHutang,
-                      totalAset: extracted.totalAset ?? profile.totalAset,
-                      frekuensiTransaksi: extracted.frekuensiTransaksi ?? profile.frekuensiTransaksi,
-                    });
-                  }
+                    const result = await apiUploadFiles(files);
+                    setUploadMsg(`✅ ${result.data.files.length} file berhasil diupload!`);
+                    const extracted = result.data.dataTerekstrak;
+                    if (extracted) {
+                      onUpdateBusiness({
+                        identitasUsaha: profile.identitasUsaha,
+                        namaPemilik: profile.namaPemilik,
+                        jenisUsaha: profile.jenisUsaha,
+                        alamatUsaha: profile.alamatUsaha,
+                        lamaBerdiri: profile.lamaBerdiri,
+                        omzetBulanan: extracted.omzetBulanan ?? profile.omzetBulanan,
+                        pengeluaranBulanan: extracted.pengeluaranBulanan ?? profile.pengeluaranBulanan,
+                        totalHutang: extracted.totalHutang ?? profile.totalHutang,
+                        totalAset: extracted.totalAset ?? profile.totalAset,
+                        frekuensiTransaksi: extracted.frekuensiTransaksi ?? profile.frekuensiTransaksi,
+                      });
+                    }
                   } catch (err: unknown) {
                     setUploadMsg(`❌ ${err instanceof Error ? err.message : "Gagal upload."}`);
                   } finally {
@@ -2265,7 +2257,7 @@ function NewPasswordPage({ onLogin, resetToken }: { onLogin: () => void; resetTo
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [form, setForm] = useState({ password: "", confirm: "" });
-  
+
 
   const EyeIcon = () => (
     <svg width="22" height="15" viewBox="0 0 22 15" fill="none">
@@ -2422,24 +2414,24 @@ function HasilScoringPage({ profile, onNavigate, onLogout, photoUrl }: { profile
   const totalSkor = scoringData?.skor_kredit ?? 0;
   const statusKredit = scoringData?.status ?? (totalSkor >= 600 ? "Layak" : totalSkor >= 500 ? "Layak Bersyarat" : "Tidak Layak");
   const pesanAI = scoringData?.pesan ?? (
-  totalSkor >= 600
-    ? "Skor Anda berada di atas rata-rata industri UMKM. Profil risiko rendah dengan manajemen arus kas yang sehat."
-    : totalSkor >= 500
-    ? "Skor Anda cukup memenuhi syarat. Perlu peningkatan pada beberapa aspek keuangan."
-    : "Skor Anda di bawah standar minimum. Diperlukan perbaikan signifikan pada arus kas dan manajemen hutang."
-);
+    totalSkor >= 600
+      ? "Skor Anda berada di atas rata-rata industri UMKM. Profil risiko rendah dengan manajemen arus kas yang sehat."
+      : totalSkor >= 500
+        ? "Skor Anda cukup memenuhi syarat. Perlu peningkatan pada beberapa aspek keuangan."
+        : "Skor Anda di bawah standar minimum. Diperlukan perbaikan signifikan pada arus kas dan manajemen hutang."
+  );
 
   const scoreVal = useCountUp(totalSkor, 1500);
   const getColor = (score: number) => score >= 70 ? "#006b55" : score >= 50 ? "#fbbf24" : "#ef4444";
 
   const fiveCItems = (scoringData?.detail && scoringData.detail.length > 0) ? scoringData.detail : [
     { label: "Character", score: 0, color: "#e0e0e0", barColor: "#e0e0e0", desc: "Belum ada data scoring." },
-    { label: "Capacity",  score: 0, color: "#e0e0e0", barColor: "#e0e0e0", desc: "Belum ada data scoring." },
-    { label: "Capital",   score: 0, color: "#e0e0e0", barColor: "#e0e0e0", desc: "Belum ada data scoring." },
+    { label: "Capacity", score: 0, color: "#e0e0e0", barColor: "#e0e0e0", desc: "Belum ada data scoring." },
+    { label: "Capital", score: 0, color: "#e0e0e0", barColor: "#e0e0e0", desc: "Belum ada data scoring." },
     { label: "Condition", score: 0, color: "#e0e0e0", barColor: "#e0e0e0", desc: "Belum ada data scoring." },
   ];
   return (
-    <div className="flex min-h-screen bg-[#f8f9ff]">
+    <div className="flex h-screen overflow-hidden bg-[#f8f9ff]">
       <DashboardSidebar activePage="hasil-scoring" onNavigate={onNavigate} onLogout={onLogout} />
       <main className="flex-1 px-10 py-8 overflow-y-auto">
         <DashboardHeader profile={profile} onNavigate={onNavigate} photoUrl={photoUrl} />
@@ -2473,14 +2465,14 @@ function HasilScoringPage({ profile, onNavigate, onLogout, photoUrl }: { profile
             </div>
             {/* Info */}
             <div>
-            <p className={`${font} font-semibold text-[28px] text-[#001038] mb-3`}>
-              Kualitas Kredit: {loadingScoring ? "..." : 
-                totalSkor >= 700 ? "Sangat Baik" :
-                totalSkor >= 600 ? "Baik" :
-                totalSkor >= 500 ? "Cukup" :
-                totalSkor >= 400 ? "Kurang" : "Tidak Layak"
-              }
-            </p>
+              <p className={`${font} font-semibold text-[28px] text-[#001038] mb-3`}>
+                Kualitas Kredit: {loadingScoring ? "..." :
+                  totalSkor >= 700 ? "Sangat Baik" :
+                    totalSkor >= 600 ? "Baik" :
+                      totalSkor >= 500 ? "Cukup" :
+                        totalSkor >= 400 ? "Kurang" : "Tidak Layak"
+                }
+              </p>
               <p className={`${font} font-normal text-[16px] text-[#44464f] leading-[24px] mb-4`}>
                 {loadingScoring ? "Memuat data scoring..." : pesanAI}
               </p>
@@ -2539,22 +2531,22 @@ function AnomaliArusKasPage({ profile, onNavigate, onLogout, photoUrl }: { profi
     import("./services/api").then(({ apiGetAnomali }) => {
       apiGetAnomali()
         .then((data) => setAnomaliData(data))
-        .catch(() => {})
+        .catch(() => { })
         .finally(() => setLoadingAnomali(false));
     });
   }, []);
 
   // Pakai data dari profil user (sudah diisi saat edit profil bisnis)
   const toNum = (str: string) => parseInt((str || "0").replace(/\D/g, "")) || 0;
-  const omzetReal       = toNum(profile.omzetBulanan);
+  const omzetReal = toNum(profile.omzetBulanan);
   const pengeluaranReal = toNum(profile.pengeluaranBulanan);
-  const bersihReal      = omzetReal - pengeluaranReal;
-  const anomaliList     = anomaliData?.anomali ?? [];
-  const totalAnomali    = anomaliList.length;
+  const bersihReal = omzetReal - pengeluaranReal;
+  const anomaliList = anomaliData?.anomali ?? [];
+  const totalAnomali = anomaliList.length;
 
-  const pemasukan   = useCountUp(omzetReal, 1400);
+  const pemasukan = useCountUp(omzetReal, 1400);
   const pengeluaran = useCountUp(pengeluaranReal, 1400);
-  const bersih      = useCountUp(Math.abs(bersihReal), 1400);
+  const bersih = useCountUp(Math.abs(bersihReal), 1400);
   const anomaliCount = useCountUp(totalAnomali, 800);
 
   const allAnomalies = anomaliList.map((a: any, i: number) => {
@@ -2584,7 +2576,7 @@ function AnomaliArusKasPage({ profile, onNavigate, onLogout, photoUrl }: { profi
     : null;
 
   return (
-    <div className="flex min-h-screen bg-[#f8f9ff]">
+    <div className="flex h-screen overflow-hidden bg-[#f8f9ff]">
       <DashboardSidebar activePage="anomali-arus-kas" onNavigate={onNavigate} onLogout={onLogout} />
       <main className="flex-1 px-10 py-8 overflow-y-auto">
         <DashboardHeader profile={profile} onNavigate={onNavigate} photoUrl={photoUrl} />
@@ -2623,7 +2615,7 @@ function AnomaliArusKasPage({ profile, onNavigate, onLogout, photoUrl }: { profi
             <p className={`${font} font-normal text-[14px] text-[#44464f] mb-2`}>Arus Kas Bersih</p>
             <p className={`${font} font-bold text-[22px] text-[#001038] mb-3`}>Rp {bersih.toLocaleString("id-ID")}</p>
             <span className={`${font} font-semibold text-[12px] rounded-full px-3 py-1 flex items-center gap-1 w-fit mb-2 ${bersihReal >= 0 ? "text-[#006b55] bg-[#e0faf4]" : "text-[#ba1a1a] bg-[#ffe4e1]"}`}>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z" /></svg>
               {bersihReal >= 0 ? "SURPLUS" : "DEFISIT"}
             </span>
             <p className={`${font} font-normal text-[12px] text-[#44464f]`}>{bersihReal >= 0 ? "Kondisi keuangan stabil" : "Perlu perhatian segera"}</p>
@@ -2633,7 +2625,7 @@ function AnomaliArusKasPage({ profile, onNavigate, onLogout, photoUrl }: { profi
             <p className={`${font} font-normal text-[14px] text-[#44464f] mb-2`}>Total Anomali</p>
             <div className="flex items-center gap-3 mb-2">
               <div className={`size-[40px] rounded-full flex items-center justify-center ${totalAnomali > 0 ? "bg-[rgba(186,26,26,0.12)]" : "bg-[rgba(100,100,100,0.1)]"}`}>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill={totalAnomali > 0 ? "#ba1a1a" : "#757575"}><path d="M1 21L12 2l11 19H1zm11-3v-2h-2v2h2zm0-4v-4h-2v4h2z"/></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill={totalAnomali > 0 ? "#ba1a1a" : "#757575"}><path d="M1 21L12 2l11 19H1zm11-3v-2h-2v2h2zm0-4v-4h-2v4h2z" /></svg>
               </div>
             </div>
             <p className={`${font} font-extrabold text-[40px] text-[#001038] leading-none mb-1`}>{anomaliCount}</p>
@@ -2642,21 +2634,21 @@ function AnomaliArusKasPage({ profile, onNavigate, onLogout, photoUrl }: { profi
 
         {/* Middle row */}
         <motion.div initial="hidden" animate="visible" variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.12 } } }} className="grid grid-cols-1 gap-4 mb-6">
-        <motion.div variants={fadeUp} className="bg-white rounded-[12px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] p-6">
-          <p className={`${font} font-normal text-[14px] text-[#44464f] mb-2`}>Anomali Tertinggi</p>
-          {anomaliTertinggi ? (
-            <>
-              <p className={`${font} font-bold text-[28px] text-[#001038] mb-1`}>
-                <CountUp to={anomaliTertinggi.nilaiNum} />
-              </p>
-              <p className={`${font} font-normal text-[14px] text-[#44464f]`}>
-                {anomaliTertinggi.tanggal}
-              </p>
-            </>
-          ) : (
-            <p className={`${font} font-normal text-[14px] text-[#44464f]`}>Tidak ada anomali</p>
-          )}
-        </motion.div>
+          <motion.div variants={fadeUp} className="bg-white rounded-[12px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] p-6">
+            <p className={`${font} font-normal text-[14px] text-[#44464f] mb-2`}>Anomali Tertinggi</p>
+            {anomaliTertinggi ? (
+              <>
+                <p className={`${font} font-bold text-[28px] text-[#001038] mb-1`}>
+                  <CountUp to={anomaliTertinggi.nilaiNum} />
+                </p>
+                <p className={`${font} font-normal text-[14px] text-[#44464f]`}>
+                  {anomaliTertinggi.tanggal}
+                </p>
+              </>
+            ) : (
+              <p className={`${font} font-normal text-[14px] text-[#44464f]`}>Tidak ada anomali</p>
+            )}
+          </motion.div>
 
         </motion.div>
 
@@ -2708,25 +2700,25 @@ function AnomaliArusKasPage({ profile, onNavigate, onLogout, photoUrl }: { profi
           </div>
         </motion.div>
         {/* Modal Detail Anomali */}
-          {selectedAnomali && (
-            <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50" onClick={() => setSelectedAnomali(null)}>
-              <div className="bg-white rounded-[16px] shadow-xl p-8 w-[480px]" onClick={e => e.stopPropagation()}>
-                <div className="flex items-center justify-between mb-5">
-                  <p className={`${font} font-bold text-[20px] text-[#001038]`}>Detail Anomali</p>
-                  <button onClick={() => setSelectedAnomali(null)} className="text-[#44464f] hover:text-[#001038] text-[20px]">✕</button>
+        {selectedAnomali && (
+          <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50" onClick={() => setSelectedAnomali(null)}>
+            <div className="bg-white rounded-[16px] shadow-xl p-8 w-[480px]" onClick={e => e.stopPropagation()}>
+              <div className="flex items-center justify-between mb-5">
+                <p className={`${font} font-bold text-[20px] text-[#001038]`}>Detail Anomali</p>
+                <button onClick={() => setSelectedAnomali(null)} className="text-[#44464f] hover:text-[#001038] text-[20px]">✕</button>
+              </div>
+              <div className="flex flex-col gap-3">
+                <div className="flex justify-between"><span className={`${font} text-[14px] text-[#44464f]`}>Tanggal</span><span className={`${font} font-semibold text-[14px] text-[#001038]`}>{selectedAnomali.tanggal}</span></div>
+                <div className="flex justify-between"><span className={`${font} text-[14px] text-[#44464f]`}>Tipe Anomali</span><span className={`${font} font-semibold text-[14px] text-[#001038]`}>{selectedAnomali.tipe}</span></div>
+                <div className="flex justify-between"><span className={`${font} text-[14px] text-[#44464f]`}>Nilai</span><span className={`${font} font-semibold text-[14px] text-[#ba1a1a]`}>{selectedAnomali.nilai}</span></div>
+                <div className="flex justify-between items-center"><span className={`${font} text-[14px] text-[#44464f]`}>Tingkat Risiko</span>
+                  <span className={`${font} font-semibold text-[12px] text-white px-3 py-1 rounded-full ${selectedAnomali.risiko === "Tinggi" ? "bg-[#ba1a1a]" : "bg-[#ff9800]"}`}>{selectedAnomali.risiko}</span>
                 </div>
-                <div className="flex flex-col gap-3">
-                  <div className="flex justify-between"><span className={`${font} text-[14px] text-[#44464f]`}>Tanggal</span><span className={`${font} font-semibold text-[14px] text-[#001038]`}>{selectedAnomali.tanggal}</span></div>
-                  <div className="flex justify-between"><span className={`${font} text-[14px] text-[#44464f]`}>Tipe Anomali</span><span className={`${font} font-semibold text-[14px] text-[#001038]`}>{selectedAnomali.tipe}</span></div>
-                  <div className="flex justify-between"><span className={`${font} text-[14px] text-[#44464f]`}>Nilai</span><span className={`${font} font-semibold text-[14px] text-[#ba1a1a]`}>{selectedAnomali.nilai}</span></div>
-                  <div className="flex justify-between items-center"><span className={`${font} text-[14px] text-[#44464f]`}>Tingkat Risiko</span>
-                    <span className={`${font} font-semibold text-[12px] text-white px-3 py-1 rounded-full ${selectedAnomali.risiko === "Tinggi" ? "bg-[#ba1a1a]" : "bg-[#ff9800]"}`}>{selectedAnomali.risiko}</span>
-                  </div>
-                  <div className="border-t border-[#e9eaf1] pt-3 mt-1"><p className={`${font} text-[14px] text-[#44464f] leading-6`}>{selectedAnomali.keterangan}</p></div>
-                </div>
+                <div className="border-t border-[#e9eaf1] pt-3 mt-1"><p className={`${font} text-[14px] text-[#44464f] leading-6`}>{selectedAnomali.keterangan}</p></div>
               </div>
             </div>
-          )}
+          </div>
+        )}
       </main>
     </div>
   );
@@ -2737,14 +2729,14 @@ function RekomendasiPage({ profile, onNavigate, onLogout, photoUrl }: { profile:
   const font = "font-['Plus_Jakarta_Sans',sans-serif]";
   const [connected, setConnected] = useState<Record<string, boolean>>(() => {
     try {
-      const saved = localStorage.getItem("modalin_rekomendasi_connected");
+      const saved = localStorage.getItem("modalin_rekomendasi_connected_v2");
       if (saved) return JSON.parse(saved);
-    } catch {}
-    return { shopee: true, rating: true, visual: true };
+    } catch { }
+    return { tokopedia: false, shopee: false, gojek: false, rating: false, visual: false };
   });
 
   useEffect(() => {
-    localStorage.setItem("modalin_rekomendasi_connected", JSON.stringify(connected));
+    localStorage.setItem("modalin_rekomendasi_connected_v2", JSON.stringify(connected));
   }, [connected]);
 
   const [toast, setToast] = useState<{ msg: string; visible: boolean }>({ msg: "", visible: false });
@@ -2762,13 +2754,13 @@ function RekomendasiPage({ profile, onNavigate, onLogout, photoUrl }: { profile:
 
   const [rekomendasiData, setRekomendasiData] = useState<any>(null);
 
-useEffect(() => {
-  import("./services/api").then(({ apiGetRekomendasi }) => {
-    apiGetRekomendasi()
-      .then((data) => setRekomendasiData(data))
-      .catch(() => {});
-  });
-}, []);
+  useEffect(() => {
+    import("./services/api").then(({ apiGetRekomendasi }) => {
+      apiGetRekomendasi()
+        .then((data) => setRekomendasiData(data))
+        .catch(() => { });
+    });
+  }, []);
 
   const actions = [
     {
@@ -2808,7 +2800,7 @@ useEffect(() => {
       id: "rating",
       icon: (
         <div className="size-[50px] flex items-center justify-center shrink-0">
-          <svg width="44" height="44" viewBox="0 0 24 24" fill="#fbbf24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="#fbbf24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" /></svg>
         </div>
       ),
       title: "Verifikasi Rating Toko",
@@ -2819,7 +2811,7 @@ useEffect(() => {
       id: "visual",
       icon: (
         <div className="size-[50px] flex items-center justify-center shrink-0">
-          <svg width="40" height="40" viewBox="0 0 24 24" fill="#44464f"><path d="M20 5h-3.17L15 3H9L7.17 5H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm-8 13c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.65 0-3 1.35-3 3s1.35 3 3 3 3-1.35 3-3-1.35-3-3-3z"/></svg>
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="#44464f"><path d="M20 5h-3.17L15 3H9L7.17 5H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm-8 13c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.65 0-3 1.35-3 3s1.35 3 3 3 3-1.35 3-3-1.35-3-3-3z" /></svg>
         </div>
       ),
       title: "Verifikasi Visual Usaha",
@@ -2873,7 +2865,7 @@ useEffect(() => {
   ];
 
   return (
-    <div className="flex min-h-screen bg-[#f8f9ff]">
+    <div className="flex h-screen overflow-hidden bg-[#f8f9ff]">
       <DashboardSidebar activePage="rekomendasi" onNavigate={onNavigate} onLogout={onLogout} />
       <main className="flex-1 px-10 py-8 overflow-y-auto">
         <DashboardHeader profile={profile} onNavigate={onNavigate} photoUrl={photoUrl} />
@@ -2959,7 +2951,7 @@ useEffect(() => {
                     Hubungkan
                   </button>
                   <div className={`size-[32px] rounded-[4px] border-2 flex items-center justify-center transition-colors ${isDone ? "bg-[#328777] border-[#328777]" : "border-[#c5c6d0]"}`}>
-                    {isDone && <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>}
+                    {isDone && <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" /></svg>}
                   </div>
                 </div>
               </motion.div>
@@ -2970,7 +2962,7 @@ useEffect(() => {
         {/* Bonus total badge */}
         {bonusTotal > 0 && (
           <div className={`${font} mt-4 inline-flex items-center gap-2 bg-[#e6faf5] border border-[#51f9cd] rounded-full px-5 py-2`}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="#006b55"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="#006b55"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" /></svg>
             <span className="text-[#006b55] font-semibold text-[14px]">Total Bonus Aktif: +{bonusTotal} Poin Skor</span>
           </div>
         )}
@@ -2979,10 +2971,196 @@ useEffect(() => {
       {/* Toast notification */}
       {toast.visible && (
         <div className="fixed bottom-8 right-8 z-50 bg-[#006b55] text-white px-6 py-3 rounded-[12px] shadow-lg flex items-center gap-3 animate-fade-in">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" /></svg>
           <span className={`${font} font-semibold text-[15px]`}>{toast.msg}</span>
         </div>
       )}
+    </div>
+  );
+}
+
+// ── AI Advisor page ───────────────────────────────────────────────────────────
+interface AiMetric { label: string; value: string; isPositive: boolean; }
+interface ShapFeature { name: string; value: number; }
+
+function AiAdvisorPage({ profile, onNavigate, onLogout }: { profile: UserProfile; onNavigate: (p: Page) => void; onLogout: () => void }) {
+  const font = "font-['Plus_Jakarta_Sans',sans-serif]";
+
+  // ── mock data — swap these from backend response ──────────────────────────
+  const creditScore = 785;
+  const scoreCategory = "Layak";
+  const lastAnalysis = "30 Mei 2025";
+  const metrics: AiMetric[] = [
+    { label: "Margin Laba", value: "25%", isPositive: true },
+    { label: "DAR Ratio", value: "0.20", isPositive: true },
+    { label: "CER Ratio", value: "0.75", isPositive: false },
+    { label: "Freq. Transaksi", value: "100/bln", isPositive: true },
+  ];
+  const aiAnalysis = `Sebagai pemilik Bisnis FNB dengan omzet Rp 5 juta/bulan, profil keuangan Anda cukup kuat. Margin laba 25% berada di atas rata-rata sektor. Fokuskan pada peningkatan frekuensi transaksi digital dari 150 ke 200/bulan untuk memperkuat rekam jejak kredit Anda dalam 3 bulan ke depan.`;
+  const aiSteps = ["Tingkatkan transaksi digital", "Jaga margin > 20%", "Update laporan bulanan"];
+  const shapFeatures: ShapFeature[] = [
+    { name: "Margin Laba (%)", value: 84.2 },
+    { name: "Lama Usaha Berdiri", value: 54.8 },
+    { name: "Frekuensi Transaksi", value: 54.8 },
+    { name: "Laba Bersih", value: 29.7 },
+    { name: "Rasio Hutang/Aset (DAR)", value: -23.7 },
+    { name: "Rasio Pengeluaran (OER)", value: -18.9 },
+    { name: "Jenis Usaha", value: -7.4 },
+  ];
+  const baselineScore = 512;
+  const finalScore = 720;
+  // ─────────────────────────────────────────────────────────────────────────
+
+  const scoreVal = useCountUp(creditScore, 1500);
+  const maxShap = Math.max(...shapFeatures.map((f) => Math.abs(f.value)));
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 28 },
+    visible: (i: number) => ({ opacity: 1, y: 0, transition: { duration: 0.5, delay: i * 0.12, ease: "easeOut" } }),
+  };
+
+  return (
+    <div className="flex h-screen overflow-hidden bg-[#f8f9ff]">
+      <DashboardSidebar activePage="ai-advisor" onNavigate={onNavigate} onLogout={onLogout} />
+      <main className="flex-1 px-10 py-8 overflow-y-auto">
+        {/* Header */}
+        <DashboardHeader profile={profile} onNavigate={onNavigate} />
+
+        <motion.h1
+          initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
+          className={`${font} font-bold text-[40px] text-[#001038] tracking-[-0.4px] leading-[48px] mt-6 mb-1`}
+        >
+          AI Advisor &amp; Explainable AI
+        </motion.h1>
+        <motion.p
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 0.1 }}
+          className={`${font} font-normal text-[16px] text-[#44464f] mb-6`}
+        >
+          Penjelasan transparan mengapa skor kredit Anda seperti ini
+        </motion.p>
+
+        {/* Top section: score card + AI recommendation */}
+        <div className="flex gap-5 mb-6">
+          {/* Score + metrics card */}
+          <motion.div
+            custom={0} initial="hidden" animate="visible" variants={cardVariants}
+            className="bg-white rounded-[12px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] p-6 flex flex-col gap-5"
+            style={{ flex: "0 0 520px" }}
+          >
+            <div>
+              <p className={`${font} font-extrabold text-[20px] text-black tracking-[0.7px] mb-2`}>Skor Kredit Anda</p>
+              <div className="flex items-center gap-3">
+                <span className={`${font} font-extrabold text-[40px] text-[#001038] leading-none`}>{scoreVal}</span>
+                <span className={`${font} font-bold text-[10px] text-[#007059] bg-[#51f9cd] rounded-[36px] px-3 py-1`}>
+                  {scoreCategory === "Layak" ? "Layak Kredit" : scoreCategory === "Review" ? "Perlu Review" : "Tidak Layak"}
+                </span>
+              </div>
+              <p className={`${font} font-normal text-[16px] text-[#44464f] mt-1`}>Dari skala 1–1000</p>
+            </div>
+
+            {/* Metric 2x2 grid */}
+            <div className="grid grid-cols-2 gap-3">
+              {metrics.map((m, i) => (
+                <motion.div
+                  key={m.label}
+                  custom={i + 1} initial="hidden" animate="visible" variants={cardVariants}
+                  className="bg-white rounded-[7px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] p-4"
+                >
+                  <p className={`${font} font-normal text-[14px] text-[#44464f] mb-1`}>{m.label}</p>
+                  <p className={`${font} font-extrabold text-[22px] text-[#001038] leading-9`}>{m.value}</p>
+                  <div className="flex items-center gap-1 mt-0.5">
+                    {m.isPositive ? (
+                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="shrink-0">
+                        <path d="M7 2L13 11H1L7 2Z" fill="#16a34a" />
+                      </svg>
+                    ) : (
+                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="shrink-0">
+                        <path d="M7 12L1 3H13L7 12Z" fill="#dc2626" />
+                      </svg>
+                    )}
+                    <span className={`${font} font-normal text-[12px] ${m.isPositive ? "text-[#007059]" : "text-[#ad000a]"}`}>
+                      {m.isPositive ? "Positif" : "Perlu dijaga"}
+                    </span>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* AI recommendation card */}
+          <motion.div
+            custom={1} initial="hidden" animate="visible" variants={cardVariants}
+            className="flex-1 bg-[rgba(40,223,181,0.2)] border-2 border-[#28dfb5] rounded-[12px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] p-6 flex flex-col gap-4"
+          >
+            <p className={`${font} font-extrabold text-[20px] text-[#007059] tracking-[0.7px]`}>Rekomendasi dari AI</p>
+            <div>
+              <p className={`${font} font-semibold text-[16px] text-[#15876f] mb-2`}>Analisis Personal</p>
+              <p className={`${font} font-normal text-[16px] text-[#44464f] leading-6`}>{aiAnalysis}</p>
+            </div>
+            <div>
+              <p className={`${font} font-extrabold text-[18px] text-[#15876f] mb-3`}>Langkah yang disarankan:</p>
+              <ul className="flex flex-col gap-2">
+                {aiSteps.map((step, i) => (
+                  <motion.li
+                    key={i}
+                    initial={{ opacity: 0, x: 16 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.4, delay: 0.5 + i * 0.12, ease: "easeOut" }}
+                    className="flex items-center gap-3"
+                  >
+                    <svg width="5" height="5" viewBox="0 0 5 5" fill="none" className="shrink-0">
+                      <circle cx="2.5" cy="2.5" r="2.5" fill="#15876F" />
+                    </svg>
+                    <span className={`${font} font-semibold text-[16px] text-[#15876f]`}>{step}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* SHAP section */}
+        <motion.div
+          custom={2} initial="hidden" animate="visible" variants={cardVariants}
+          className="bg-white rounded-[12px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] p-6"
+        >
+          <p className={`${font} font-extrabold text-[20px] text-black tracking-[0.7px] mb-1`}>
+            SHAP – Kontribusi Fitur terhadap Skor Kredit
+          </p>
+          <p className={`${font} font-normal text-[16px] text-[#44464f] mb-6`}>
+            Seberapa besar setiap faktor mempengaruhi skor kredit Anda. Positif = menaikkan skor, Negatif = menurunkan skor.
+          </p>
+
+          <div className="flex flex-col gap-4">
+            {shapFeatures.map((f, i) => {
+              const isPos = f.value >= 0;
+              const pct = (Math.abs(f.value) / maxShap) * 100;
+              return (
+                <div key={f.name} className="flex items-center gap-4">
+                  <span className={`${font} font-normal text-[15px] text-[#44464f] w-[220px] shrink-0`}>{f.name}</span>
+                  <div className="flex-1 bg-[#e5eeff] rounded-[26px] h-[15px] overflow-hidden">
+                    <motion.div
+                      className={`h-full rounded-[26px] ${isPos ? "bg-[#2f6ab7]" : "bg-[#ef4444]"}`}
+                      initial={{ width: 0 }}
+                      animate={{ width: `${pct}%` }}
+                      transition={{ duration: 0.9, delay: 0.3 + i * 0.1, ease: "easeOut" }}
+                    />
+                  </div>
+                  <span className={`${font} font-semibold text-[15px] w-[60px] text-right shrink-0 ${isPos ? "text-[#0f6e56]" : "text-[#93000a]"}`}>
+                    {isPos ? `+${f.value}` : f.value}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="border-t border-[#e5eeff] mt-6 pt-4">
+            <p className={`${font} font-normal text-[16px] text-[#44464f]`}>
+              Skor baseline model {baselineScore} → Skor akhir Anda: {finalScore} (selisih +{finalScore - baselineScore} dari kontribusi fitur positif)
+            </p>
+          </div>
+        </motion.div>
+      </main>
     </div>
   );
 }
@@ -3008,8 +3186,8 @@ export default function App() {
   const [resetToken, setResetToken] = useState("");
   const [loanData, setLoanData] = useState<{ amount: number; duration: number } | null>(null);
   const [photoUrl, setPhotoUrl] = useState<string | null>(() => {
-  return localStorage.getItem("modalin_photo") || null;
-});
+    return localStorage.getItem("modalin_photo") || null;
+  });
   const [userProfile, setUserProfile] = useState<UserProfile>({
     nik: "", nama: "", email: "", telepon: "", alamat: "",
     identitasUsaha: "", namaPemilik: "", jenisUsaha: "", alamatUsaha: "",
@@ -3020,7 +3198,7 @@ export default function App() {
   const featuresRef = useRef<HTMLElement>(null);
   const howItWorksRef = useRef<HTMLElement>(null);
 
-  const protectedPages: Page[] = ["dashboard", "cairkan-dana", "bayar-tagihan", "hasil-scoring", "anomali-arus-kas", "rekomendasi"];
+  const protectedPages: Page[] = ["dashboard", "cairkan-dana", "bayar-tagihan", "hasil-scoring", "anomali-arus-kas", "rekomendasi", "ai-advisor"];
 
   useEffect(() => {
     const handlePopState = (event: PopStateEvent) => {
@@ -3042,18 +3220,18 @@ export default function App() {
     if (token) {
       import("./services/api").then(({ apiGetProfile }) => {
         apiGetProfile()
-        .then((user) => {
-          setUserProfile((p) => ({ ...p, ...user }));
-          const savedPhoto = localStorage.getItem("modalin_photo");
-          if (savedPhoto && savedPhoto.startsWith("data:image")) {
-            setPhotoUrl(savedPhoto);
-          } else if (user.fotoProfil) {
-            setPhotoUrl(`https://modalin-app-production.up.railway.app/uploads/${user.fotoProfil}`);
-          }
-          const savedPage = localStorage.getItem("modalin_page") as Page;
-          const targetPage = savedPage || "dashboard";
-          setPage(targetPage);
-        })
+          .then((user) => {
+            setUserProfile((p) => ({ ...p, ...user }));
+            const savedPhoto = localStorage.getItem("modalin_photo");
+            if (savedPhoto && savedPhoto.startsWith("data:image")) {
+              setPhotoUrl(savedPhoto);
+            } else if (user.fotoProfil) {
+              setPhotoUrl(`https://modalin-app-production.up.railway.app/uploads/${user.fotoProfil}`);
+            }
+            const savedPage = localStorage.getItem("modalin_page") as Page;
+            const targetPage = savedPage || "dashboard";
+            setPage(targetPage);
+          })
           .catch(() => {
             localStorage.removeItem("modalin_token");
             localStorage.removeItem("modalin_page");
@@ -3063,19 +3241,19 @@ export default function App() {
     }
   }, []);
 
-    const navigateTo = (p: Page) => {
-      if (protectedPages.includes(p) && !isProfileComplete(userProfile)) {
-        setShowProfileWarning(true);
-        setPage("profile");
-        localStorage.setItem("modalin_page", "profile");
-        window.history.pushState({ page: "profile" }, "", `#profile`);
-      } else {
-        setShowProfileWarning(false);
-        setPage(p);
-        localStorage.setItem("modalin_page", p);
-        window.history.pushState({ page: p }, "", `#${p}`);
-      }
-    };
+  const navigateTo = (p: Page) => {
+    if (protectedPages.includes(p) && !isProfileComplete(userProfile)) {
+      setShowProfileWarning(true);
+      setPage("profile");
+      localStorage.setItem("modalin_page", "profile");
+      window.history.pushState({ page: "profile" }, "", `#profile`);
+    } else {
+      setShowProfileWarning(false);
+      setPage(p);
+      localStorage.setItem("modalin_page", p);
+      window.history.pushState({ page: p }, "", `#${p}`);
+    }
+  };
 
   const handleNavClick = (id: string) => {
     setActiveNav(id);
@@ -3150,6 +3328,10 @@ export default function App() {
     return <RekomendasiPage profile={userProfile} photoUrl={photoUrl} onNavigate={(p) => navigateTo(p)} onLogout={handleLogout} />;
   }
 
+  if (page === "ai-advisor") {
+    return <AiAdvisorPage profile={userProfile} onNavigate={(p) => navigateTo(p)} onLogout={handleLogout} />;
+  }
+
   if (page === "profile") {
     return (
       <ProfilePage
@@ -3204,9 +3386,9 @@ export default function App() {
                 reader.readAsDataURL(blob);
               })
               .catch(() => {
-              localStorage.setItem("modalin_photo", fotoUrl);
-              setPhotoUrl(fotoUrl);
-            });
+                localStorage.setItem("modalin_photo", fotoUrl);
+                setPhotoUrl(fotoUrl);
+              });
           }
           navigateTo("dashboard");
         }}
@@ -3231,7 +3413,7 @@ export default function App() {
         onSuccess={(resetToken) => {
           setResetToken(resetToken);
           setPage("new-password");
-        }} 
+        }}
       />
     );
   }
