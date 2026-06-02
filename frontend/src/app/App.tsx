@@ -1636,11 +1636,12 @@ function CairanDanaPage({ onBack, onNavigate, onConfirmLoan, profile, onLogout }
 }
 
 // ── Bayar Tagihan page ────────────────────────────────────────────────────────
-function BayarTagihanPage({ loanData, onBack, onNavigate, onClearLoan, onLogout }: {
+function BayarTagihanPage({ loanData, onBack, onNavigate, onClearLoan, onPayInstallment, onLogout }: {
   loanData: { amount: number; duration: number };
   onBack: () => void;
   onNavigate: (page: Page) => void;
   onClearLoan: () => void;
+  onPayInstallment?: (remaining: number) => void;
   onLogout: () => void;
 }) {
   const font = "font-['Plus_Jakarta_Sans',sans-serif]";
@@ -1748,8 +1749,15 @@ function BayarTagihanPage({ loanData, onBack, onNavigate, onClearLoan, onLogout 
                   whileTap={{ scale: 0.97 }}
                   onClick={() => {
                     setPaid(true);
+                    const remainingDuration = duration - 1;
                     setTimeout(() => {
-                      onClearLoan();
+                      if (remainingDuration <= 0) {
+                        onClearLoan();
+                      } else if (onPayInstallment) {
+                        onPayInstallment(remainingDuration);
+                      } else {
+                        onClearLoan();
+                      }
                       onBack();
                     }, 1500);
                   }}
@@ -3033,7 +3041,20 @@ function AiAdvisorPage({ profile, onNavigate, onLogout }: { profile: UserProfile
     { label: "Freq. Transaksi",  value: `${Math.round(freqTrx)}/bln`,         isPositive: freqTrx >= 50 },
   ];
   const aiAnalysis  = ad?.rekomendasi_ai ?? ad?.analisis ?? (aiLoading ? "Memuat analisis AI..." : "Data belum tersedia. Lengkapi profil bisnis Anda.");
-  const aiSteps     = ad?.langkah ?? (ad?.fitur_dominan ? Object.keys(ad.fitur_dominan).slice(0, 3).map(k => `Perhatikan: ${k}`) : []);
+  const fieldLabels: Record<string, string> = {
+    margin_laba: "Pertahankan margin laba di atas 20% dari omzet",
+    dar_ratio: "Jaga rasio hutang terhadap aset (DAR) di bawah 0.5",
+    oer_ratio: "Kurangi rasio pengeluaran operasional untuk meningkatkan efisiensi",
+    freq_trx: "Tingkatkan frekuensi transaksi digital setiap bulan",
+    laba_bersih: "Tingkatkan laba bersih dengan menekan biaya operasional",
+    lama_bln: "Konsistensi usaha yang lebih lama meningkatkan kepercayaan kredit",
+    avg_trx_value: "Tingkatkan nilai rata-rata transaksi per bulan",
+    hutang: "Kurangi total hutang untuk memperbaiki profil risiko",
+    jenis_usaha_enc: "Diversifikasi jenis usaha untuk memperluas peluang",
+  };
+  const aiSteps = ad?.langkah ?? (ad?.fitur_dominan
+    ? Object.keys(ad.fitur_dominan).slice(0, 3).map(k => fieldLabels[k] ?? `Optimalkan: ${k.replace(/_/g, " ")}`)
+    : []);
   const shapFeatures: ShapFeature[] = (sh?.fitur ?? [
     { name: "Margin Laba (%)",        value: marginLaba > 0 ? marginLaba * 0.5 : 0 },
     { name: "Frekuensi Transaksi",    value: freqTrx > 0 ? freqTrx * 0.2 : 0 },
@@ -3345,6 +3366,7 @@ export default function App() {
         onBack={() => setPage("dashboard")}
         onNavigate={(p) => navigateTo(p)}
         onClearLoan={() => setLoanData(null)}
+        onPayInstallment={(remaining) => setLoanData(prev => prev ? { ...prev, duration: remaining } : null)}
         onLogout={handleLogout}
       />
     );
