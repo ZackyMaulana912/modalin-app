@@ -136,7 +136,7 @@ VITE_API_URL=https://modalin-app-production-21a2.up.railway.app/api
 ##  Fitur Utama
 
 - **AI Credit Scoring** — Skor kredit 100–900 berbasis model neural network
-- **Analisis 5C** — Character, Capacity, Capital, Condition
+- **Analisis 4C** — Character, Capacity, Capital, Condition
 - **Deteksi Anomali** — 7 jenis anomali arus kas terdeteksi otomatis
 - **Rekomendasi** — Rencana aksi finansial yang dipersonalisasi
 - **Upload Mutasi** — Analisis PDF mutasi rekening bank
