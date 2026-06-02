@@ -1,3 +1,4 @@
+import React from "react";
 import {
   apiRegister,
   apiLogin,
@@ -2989,12 +2990,12 @@ function AiAdvisorPage({ profile, onNavigate, onLogout }: { profile: UserProfile
   const font = "font-['Plus_Jakarta_Sans',sans-serif]";
 
   // ── real data from backend ──────────────────────────────────────────────────
-  const [advisorData, setAdvisorData] = React.useState<unknown>(null);
-  const [shapData, setShapData]       = React.useState<unknown>(null);
-  const [scoringData, setScoringData] = React.useState<unknown>(null);
-  const [aiLoading, setAiLoading]     = React.useState(true);
+  const [advisorData, setAdvisorData] = useState<unknown>(null);
+  const [shapData, setShapData]       = useState<unknown>(null);
+  const [scoringData, setScoringData] = useState<unknown>(null);
+  const [aiLoading, setAiLoading]     = useState(true);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const BASE = (import.meta.env.VITE_API_BASE_URL ?? "").replace(/\/api$/, "");
     const token = localStorage.getItem("modelin_token");
     const headers: Record<string, string> = { "Content-Type": "application/json" };
