@@ -3015,7 +3015,7 @@ function AiAdvisorPage({ profile, onNavigate, onLogout }: { profile: UserProfile
 
   // Derived values — fall back to safe defaults while loading
   const sd = scoringData as {skor_kredit?: number; status?: string; fitur_hitung?: Record<string, number>} | null;
-  const ad = advisorData as {analisis?: string; langkah?: string[]; tanggal?: string} | null;
+  const ad = advisorData as {rekomendasi_ai?: string; analisis?: string; langkah?: string[]; tanggal?: string; fitur_dominan?: Record<string, number>} | null;
   const sh = shapData  as {fitur?: {name: string; value: number}[]; baseline?: number; final?: number} | null;
 
   const creditScore    = sd?.skor_kredit ?? 0;
@@ -3032,8 +3032,8 @@ function AiAdvisorPage({ profile, onNavigate, onLogout }: { profile: UserProfile
     { label: "OER Ratio",        value: oerRatio.toFixed(2),                  isPositive: oerRatio <= 0.75 },
     { label: "Freq. Transaksi",  value: `${Math.round(freqTrx)}/bln`,         isPositive: freqTrx >= 50 },
   ];
-  const aiAnalysis  = ad?.analisis ?? (aiLoading ? "Memuat analisis AI..." : "Data belum tersedia. Lengkapi profil bisnis Anda.");
-  const aiSteps     = ad?.langkah  ?? [];
+  const aiAnalysis  = ad?.rekomendasi_ai ?? ad?.analisis ?? (aiLoading ? "Memuat analisis AI..." : "Data belum tersedia. Lengkapi profil bisnis Anda.");
+  const aiSteps     = ad?.langkah ?? (ad?.fitur_dominan ? Object.keys(ad.fitur_dominan).slice(0, 3).map(k => `Perhatikan: ${k}`) : []);
   const shapFeatures: ShapFeature[] = (sh?.fitur ?? [
     { name: "Margin Laba (%)",        value: marginLaba > 0 ? marginLaba * 0.5 : 0 },
     { name: "Frekuensi Transaksi",    value: freqTrx > 0 ? freqTrx * 0.2 : 0 },
@@ -3180,7 +3180,7 @@ function AiAdvisorPage({ profile, onNavigate, onLogout }: { profile: UserProfile
                     />
                   </div>
                   <span className={`${font} font-semibold text-[15px] w-[60px] text-right shrink-0 ${isPos ? "text-[#0f6e56]" : "text-[#93000a]"}`}>
-                    {isPos ? `+${f.value}` : f.value}
+                    {isPos ? `+${Number(f.value).toFixed(1)}` : Number(f.value).toFixed(1)}
                   </span>
                 </div>
               );
@@ -3189,7 +3189,7 @@ function AiAdvisorPage({ profile, onNavigate, onLogout }: { profile: UserProfile
 
           <div className="border-t border-[#e5eeff] mt-6 pt-4">
             <p className={`${font} font-normal text-[16px] text-[#44464f]`}>
-              Skor baseline model {baselineScore} → Skor akhir Anda: {finalScore} (selisih +{finalScore - baselineScore} dari kontribusi fitur positif)
+              Skor baseline model {baselineScore} → Skor akhir Anda: {Number(finalScore).toFixed(1)} (selisih +{Number(finalScore - baselineScore).toFixed(1)} dari kontribusi fitur positif)
             </p>
           </div>
         </motion.div>

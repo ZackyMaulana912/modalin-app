@@ -133,27 +133,32 @@ export async function apiGetRiwayatUpload() {
 // ── Scoring ───────────────────────────────────────────────────────────────────
 
 export async function apiGetScoring() {
-  return request<{ skor_kredit: number; status: string; data: unknown }>("GET", "/scoring");
+  const res = await request<{ status: string; data: Record<string, unknown> }>("GET", "/scoring");
+  return (res as unknown as { data?: Record<string, unknown> })?.data ?? res;
 }
 
 // ── Anomali ───────────────────────────────────────────────────────────────────
 
 export async function apiGetAnomali() {
-  return request<{ data: unknown }>("GET", "/scoring/anomali");
+  const res = await request<{ status: string; data: Record<string, unknown> }>("GET", "/scoring/anomali");
+  return (res as unknown as { data?: Record<string, unknown> })?.data ?? res;
 }
 
 // ── Rekomendasi ───────────────────────────────────────────────────────────────
 
 export async function apiGetRekomendasi() {
-  return request<unknown>("GET", "/scoring/rekomendasi");
+  const res = await request<{ status: string; data: Record<string, unknown> }>("GET", "/scoring/rekomendasi");
+  return (res as unknown as { data?: Record<string, unknown> })?.data ?? res;
 }
 
 // ── SHAP & AI Advisor ─────────────────────────────────────────────────────────
 
 export async function apiGetShap() {
-  return post<unknown>("/scoring/shap", {});
+  const res = await post<{ status: string; data: Record<string, unknown> }>("/scoring/shap", {});
+  return (res as unknown as { data?: Record<string, unknown> })?.data ?? res;
 }
 
 export async function apiGetAdvisor() {
-  return post<unknown>("/scoring/advisor", {});
+  const res = await post<{ status: string; data: Record<string, unknown> }>("/scoring/advisor", {});
+  return (res as unknown as { data?: Record<string, unknown> })?.data ?? res;
 }
