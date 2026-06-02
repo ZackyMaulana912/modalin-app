@@ -23,7 +23,7 @@ ModalIn membantu UMKM yang tidak punya riwayat kredit formal (*thin-file borrowe
 |------|------|----------------|
 | Zacky Maulana | Data Scientist | Dataset, EDA, model training, laporan teknis |
 | Andy | AI Engineer | FastAPI, deployment model, SHAP, Gemini AI |
-| Zacky | Backend Engineer | REST API, autentikasi, database |
+| Zacky Maulana | Backend Engineer | REST API, autentikasi, database |
 | Andy| Frontend Engineer | UI/UX, integrasi API, Vercel deployment |
 
 ---
