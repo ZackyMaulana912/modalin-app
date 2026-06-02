@@ -71,7 +71,7 @@ async def lifespan(app: FastAPI):
     gemini_key = os.environ.get("GEMINI_API_KEY", "")
     if gemini_key:
         genai.configure(api_key=gemini_key)
-        artifacts["genai_model"] = genai.GenerativeModel("gemini-1.5-flash")
+        artifacts["genai_model"] = genai.GenerativeModel("gemini-2.0-flash")
         print("✅ Gemini AI loaded!")
     else:
         artifacts["genai_model"] = None
