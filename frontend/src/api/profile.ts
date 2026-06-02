@@ -8,17 +8,20 @@ import type {
 
 export const profileApi = {
   getProfile: (): Promise<ProfileResponse> =>
-    api.get("/profile"),
+    api.get("/user/profile"),
 
   updatePersonal: (data: UpdatePersonalRequest): Promise<ProfileResponse> =>
-    api.put("/profile/personal", data),
+    api.put("/user/profile/personal", data),
 
   updateBusiness: (data: UpdateBusinessRequest): Promise<ProfileResponse> =>
-    api.put("/profile/business", data),
+    api.put("/user/profile/business", data),
+
+  changePassword: (data: { oldPassword: string; newPassword: string }): Promise<{ message: string }> =>
+    api.put("/user/profile/password", data),
 
   uploadPhoto: async (file: File): Promise<UploadPhotoResponse> => {
     const formData = new FormData();
-    formData.append("photo", file);
-    return api.upload("/profile/photo", formData);
+    formData.append("foto", file);
+    return api.upload("/user/profile/photo", formData);
   },
 };

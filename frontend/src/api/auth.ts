@@ -31,8 +31,11 @@ export const authApi = {
   forgotPassword: (data: ForgotPasswordRequest): Promise<MessageResponse> =>
     api.post("/auth/forgot-password", data),
 
+  verifyOtp: (data: VerifyCodeRequest): Promise<MessageResponse> =>
+    api.post("/auth/verify-otp", data),
+
   verifyCode: (data: VerifyCodeRequest): Promise<MessageResponse> =>
-    api.post("/auth/verify-code", data),
+    api.post("/auth/verify-otp", data),
 
   resetPassword: (data: ResetPasswordRequest): Promise<MessageResponse> =>
     api.post("/auth/reset-password", data),

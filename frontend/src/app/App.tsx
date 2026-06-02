@@ -2986,29 +2986,59 @@ interface ShapFeature { name: string; value: number; }
 function AiAdvisorPage({ profile, onNavigate, onLogout }: { profile: UserProfile; onNavigate: (p: Page) => void; onLogout: () => void }) {
   const font = "font-['Plus_Jakarta_Sans',sans-serif]";
 
-  // ── mock data — swap these from backend response ──────────────────────────
-  const creditScore = 785;
-  const scoreCategory = "Layak";
-  const lastAnalysis = "30 Mei 2025";
+  // ── real data from backend ──────────────────────────────────────────────────
+  const [advisorData, setAdvisorData] = React.useState<unknown>(null);
+  const [shapData, setShapData]       = React.useState<unknown>(null);
+  const [scoringData, setScoringData] = React.useState<unknown>(null);
+  const [aiLoading, setAiLoading]     = React.useState(true);
+
+  React.useEffect(() => {
+    const BASE = (import.meta.env.VITE_API_BASE_URL ?? "").replace(/\/api$/, "");
+    const token = localStorage.getItem("modelin_token");
+    const headers: Record<string, string> = { "Content-Type": "application/json" };
+    if (token) headers["Authorization"] = `Bearer ${token}`;
+
+    Promise.allSettled([
+      fetch(`${BASE}/api/scoring`, { headers }).then(r => r.json()),
+      fetch(`${BASE}/api/scoring/shap`, { method: "POST", headers, body: "{}" }).then(r => r.json()),
+      fetch(`${BASE}/api/scoring/advisor`, { method: "POST", headers, body: "{}" }).then(r => r.json()),
+    ]).then(([sc, sh, ad]) => {
+      if (sc.status === "fulfilled") setScoringData((sc.value as {data?: unknown})?.data ?? sc.value);
+      if (sh.status === "fulfilled") setShapData((sh.value as {data?: unknown})?.data ?? sh.value);
+      if (ad.status === "fulfilled") setAdvisorData((ad.value as {data?: unknown})?.data ?? ad.value);
+      setAiLoading(false);
+    });
+  }, []);
+
+  // Derived values — fall back to safe defaults while loading
+  const sd = scoringData as {skor_kredit?: number; status?: string; fitur_hitung?: Record<string, number>} | null;
+  const ad = advisorData as {analisis?: string; langkah?: string[]; tanggal?: string} | null;
+  const sh = shapData  as {fitur?: {name: string; value: number}[]; baseline?: number; final?: number} | null;
+
+  const creditScore    = sd?.skor_kredit ?? 0;
+  const scoreCategory  = sd?.status ?? "—";
+  const lastAnalysis   = ad?.tanggal ?? new Date().toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" });
+  const fitur          = sd?.fitur_hitung ?? {};
+  const marginLaba     = fitur.margin_laba ?? 0;
+  const darRatio       = fitur.dar_ratio ?? 0;
+  const oerRatio       = fitur.oer_ratio ?? 0;
+  const freqTrx        = fitur.freq_trx ?? 0;
   const metrics: AiMetric[] = [
-    { label: "Margin Laba", value: "25%", isPositive: true },
-    { label: "DAR Ratio", value: "0.20", isPositive: true },
-    { label: "CER Ratio", value: "0.75", isPositive: false },
-    { label: "Freq. Transaksi", value: "100/bln", isPositive: true },
+    { label: "Margin Laba",      value: `${marginLaba.toFixed(1)}%`,         isPositive: marginLaba >= 20 },
+    { label: "DAR Ratio",        value: darRatio.toFixed(2),                  isPositive: darRatio <= 0.5 },
+    { label: "OER Ratio",        value: oerRatio.toFixed(2),                  isPositive: oerRatio <= 0.75 },
+    { label: "Freq. Transaksi",  value: `${Math.round(freqTrx)}/bln`,         isPositive: freqTrx >= 50 },
   ];
-  const aiAnalysis = `Sebagai pemilik Bisnis FNB dengan omzet Rp 5 juta/bulan, profil keuangan Anda cukup kuat. Margin laba 25% berada di atas rata-rata sektor. Fokuskan pada peningkatan frekuensi transaksi digital dari 150 ke 200/bulan untuk memperkuat rekam jejak kredit Anda dalam 3 bulan ke depan.`;
-  const aiSteps = ["Tingkatkan transaksi digital", "Jaga margin > 20%", "Update laporan bulanan"];
-  const shapFeatures: ShapFeature[] = [
-    { name: "Margin Laba (%)", value: 84.2 },
-    { name: "Lama Usaha Berdiri", value: 54.8 },
-    { name: "Frekuensi Transaksi", value: 54.8 },
-    { name: "Laba Bersih", value: 29.7 },
-    { name: "Rasio Hutang/Aset (DAR)", value: -23.7 },
-    { name: "Rasio Pengeluaran (OER)", value: -18.9 },
-    { name: "Jenis Usaha", value: -7.4 },
-  ];
-  const baselineScore = 512;
-  const finalScore = 720;
+  const aiAnalysis  = ad?.analisis ?? (aiLoading ? "Memuat analisis AI..." : "Data belum tersedia. Lengkapi profil bisnis Anda.");
+  const aiSteps     = ad?.langkah  ?? [];
+  const shapFeatures: ShapFeature[] = (sh?.fitur ?? [
+    { name: "Margin Laba (%)",        value: marginLaba > 0 ? marginLaba * 0.5 : 0 },
+    { name: "Frekuensi Transaksi",    value: freqTrx > 0 ? freqTrx * 0.2 : 0 },
+    { name: "Rasio Hutang/Aset (DAR)",value: darRatio > 0 ? -(darRatio * 30) : 0 },
+    { name: "Rasio Pengeluaran (OER)",value: oerRatio > 0 ? -(oerRatio * 20) : 0 },
+  ]).filter((f: {value: number}) => f.value !== 0);
+  const baselineScore = sh?.baseline ?? 500;
+  const finalScore    = sh?.final    ?? creditScore;
   // ─────────────────────────────────────────────────────────────────────────
 
   const scoreVal = useCountUp(creditScore, 1500);

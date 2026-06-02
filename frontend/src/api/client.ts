@@ -1,4 +1,4 @@
-const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "";
+const BASE_URL = (import.meta.env.VITE_API_BASE_URL ?? "").replace(/\/api$/, "");
 
 export class ApiError extends Error {
   constructor(
@@ -35,7 +35,7 @@ async function request<T>(
   if (token) headers["Authorization"] = `Bearer ${token}`;
   if (!isFormData) headers["Content-Type"] = "application/json";
 
-  const res = await fetch(`${BASE_URL}${path}`, {
+  const res = await fetch(`${BASE_URL}/api${path}`, {
     method,
     headers,
     body: isFormData

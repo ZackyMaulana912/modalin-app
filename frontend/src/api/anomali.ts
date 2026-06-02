@@ -3,5 +3,5 @@ import type { AnomaliArusKasResponse } from "./types";
 
 export const anomaliApi = {
   getAnomali: (): Promise<AnomaliArusKasResponse> =>
-    api.get("/anomali"),
+    api.get("/scoring/anomali"),
 };
