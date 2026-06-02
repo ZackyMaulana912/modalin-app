@@ -36,11 +36,23 @@ export async function apiRegister(data: {
   email: string;
   password: string;
 }) {
-  return post<{ token: string; user: unknown }>("/auth/register", data);
+  const res = await post<{ status: string; data: { token: string; user: Record<string, unknown> } }>(
+    "/auth/register",
+    data,
+  );
+  const payload = res.data ?? (res as unknown as { token: string; user: Record<string, unknown> });
+  if (payload.token) localStorage.setItem("modelin_token", payload.token);
+  return payload;
 }
 
 export async function apiLogin(data: { email: string; password: string }) {
-  return post<{ token: string; user: unknown }>("/auth/login", data);
+  const res = await post<{ status: string; data: { token: string; user: Record<string, unknown> } }>(
+    "/auth/login",
+    data,
+  );
+  const payload = res.data ?? (res as unknown as { token: string; user: Record<string, unknown> });
+  if (payload.token) localStorage.setItem("modelin_token", payload.token);
+  return payload.user as Record<string, unknown>;
 }
 
 export async function apiForgotPassword(data: { email: string }) {
@@ -72,7 +84,11 @@ export async function apiUpdatePersonal(data: {
   telepon: string;
   alamat: string;
 }) {
-  return put<{ message: string }>("/user/profile/personal", data);
+  const res = await put<{ status: string; message: string; data?: { user?: Record<string, unknown> } }>(
+    "/user/profile/personal",
+    data,
+  );
+  return res.data?.user ?? res;
 }
 
 export async function apiUpdateBusiness(data: {
@@ -87,7 +103,11 @@ export async function apiUpdateBusiness(data: {
   totalAset: string;
   frekuensiTransaksi: string;
 }) {
-  return put<{ message: string }>("/user/profile/business", data);
+  const res = await put<{ status: string; message: string; data?: { user?: Record<string, unknown> } }>(
+    "/user/profile/business",
+    data,
+  );
+  return res.data?.user ?? res;
 }
 
 export async function apiChangePassword(data: {

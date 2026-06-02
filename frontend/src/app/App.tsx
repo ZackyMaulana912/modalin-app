@@ -3259,7 +3259,7 @@ export default function App() {
             if (savedPhoto && savedPhoto.startsWith("data:image")) {
               setPhotoUrl(savedPhoto);
             } else if (user.fotoProfil) {
-              setPhotoUrl(`https://modalin-app-production.up.railway.app/uploads/${user.fotoProfil}`);
+              setPhotoUrl(`${(import.meta.env.VITE_API_BASE_URL ?? "").replace(/\/api$/, "")}/uploads/${user.fotoProfil}`);
             }
             const savedPage = localStorage.getItem("modelin_page") as Page;
             const targetPage = savedPage || "dashboard";
@@ -3404,7 +3404,7 @@ export default function App() {
           setUserProfile((p) => ({ ...p, ...user }));
           if (user.fotoProfil) {
             console.log("fotoProfil dari backend:", user.fotoProfil);
-            const fotoUrl = `https://modalin-app-production.up.railway.app/uploads/${user.fotoProfil}`;
+            const fotoUrl = `${(import.meta.env.VITE_API_BASE_URL ?? "").replace(/\/api$/, "")}/uploads/${user.fotoProfil}`;
             console.log("fotoUrl:", fotoUrl);
             // Load foto dari backend lalu simpan ke localStorage sebagai base64
             fetch(fotoUrl)
