@@ -1793,7 +1793,7 @@ function ProfilePage({ profile, photoUrl, onPhotoChange, onUpdatePersonal, onUpd
     reader.onload = async (ev) => {
       const base64 = ev.target?.result as string;
       onPhotoChange(base64);
-      localStorage.setItem("modalin_photo", base64);
+      localStorage.setItem("modelin_photo", base64);
       try {
         const { apiUploadFoto } = await import("./services/api");
         await apiUploadFoto(file);
@@ -1859,7 +1859,7 @@ function ProfilePage({ profile, photoUrl, onPhotoChange, onUpdatePersonal, onUpd
               <button
                 onClick={async () => {
                   onPhotoChange(null);
-                  localStorage.removeItem("modalin_photo");
+                  localStorage.removeItem("modelin_photo");
                   try {
                     const { apiHapusFoto } = await import("./services/api");
                     await apiHapusFoto();
@@ -1984,7 +1984,9 @@ function ProfilePage({ profile, photoUrl, onPhotoChange, onUpdatePersonal, onUpd
                   setUploadLoading(true);
                   setUploadMsg("");
                   try {
-                    const result = await apiUploadFiles(files);
+                    const formData = new FormData();
+                    files.forEach((f) => formData.append("files", f));
+                    const result = await apiUploadFiles(formData);
                     setUploadMsg(`✅ ${result.data.files.length} file berhasil diupload!`);
                     const extracted = result.data.dataTerekstrak;
                     if (extracted) {
@@ -3207,8 +3209,8 @@ function isProfileComplete(p: UserProfile) {
 
 export default function App() {
   const [page, setPage] = useState<Page>(() => {
-    const token = localStorage.getItem("modalin_token");
-    const saved = localStorage.getItem("modalin_page") as Page;
+    const token = localStorage.getItem("modelin_token");
+    const saved = localStorage.getItem("modelin_page") as Page;
     if (token && saved) return saved;
     return "home";
   });
@@ -3216,7 +3218,7 @@ export default function App() {
   const [resetToken, setResetToken] = useState("");
   const [loanData, setLoanData] = useState<{ amount: number; duration: number } | null>(null);
   const [photoUrl, setPhotoUrl] = useState<string | null>(() => {
-    return localStorage.getItem("modalin_photo") || null;
+    return localStorage.getItem("modelin_photo") || null;
   });
   const [userProfile, setUserProfile] = useState<UserProfile>({
     nik: "", nama: "", email: "", telepon: "", alamat: "",
@@ -3232,10 +3234,10 @@ export default function App() {
 
   useEffect(() => {
     const handlePopState = (event: PopStateEvent) => {
-      const token = localStorage.getItem("modalin_token");
+      const token = localStorage.getItem("modelin_token");
       if (event.state?.page) {
         setPage(event.state.page as Page);
-        localStorage.setItem("modalin_page", event.state.page);
+        localStorage.setItem("modelin_page", event.state.page);
       } else {
         setPage(token ? "dashboard" : "home");
       }
@@ -3246,25 +3248,26 @@ export default function App() {
 
   // Auto-login & load profil jika token masih ada
   useEffect(() => {
-    const token = localStorage.getItem("modalin_token");
+    const token = localStorage.getItem("modelin_token");
     if (token) {
       import("./services/api").then(({ apiGetProfile }) => {
         apiGetProfile()
-          .then((user) => {
-            setUserProfile((p) => ({ ...p, ...user }));
-            const savedPhoto = localStorage.getItem("modalin_photo");
+          .then((res: unknown) => {
+            const user = (res as {data?: {user?: unknown}})?.data?.user ?? res;
+            setUserProfile((p) => ({ ...p, ...(user as object) }));
+            const savedPhoto = localStorage.getItem("modelin_photo");
             if (savedPhoto && savedPhoto.startsWith("data:image")) {
               setPhotoUrl(savedPhoto);
             } else if (user.fotoProfil) {
               setPhotoUrl(`https://modalin-app-production.up.railway.app/uploads/${user.fotoProfil}`);
             }
-            const savedPage = localStorage.getItem("modalin_page") as Page;
+            const savedPage = localStorage.getItem("modelin_page") as Page;
             const targetPage = savedPage || "dashboard";
             setPage(targetPage);
           })
           .catch(() => {
-            localStorage.removeItem("modalin_token");
-            localStorage.removeItem("modalin_page");
+            localStorage.removeItem("modelin_token");
+            localStorage.removeItem("modelin_page");
             setPage("home");
           });
       });
@@ -3275,12 +3278,12 @@ export default function App() {
     if (protectedPages.includes(p) && !isProfileComplete(userProfile)) {
       setShowProfileWarning(true);
       setPage("profile");
-      localStorage.setItem("modalin_page", "profile");
+      localStorage.setItem("modelin_page", "profile");
       window.history.pushState({ page: "profile" }, "", `#profile`);
     } else {
       setShowProfileWarning(false);
       setPage(p);
-      localStorage.setItem("modalin_page", p);
+      localStorage.setItem("modelin_page", p);
       window.history.pushState({ page: p }, "", `#${p}`);
     }
   };
@@ -3294,9 +3297,9 @@ export default function App() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("modalin_token");
-    localStorage.removeItem("modalin_page");
-    localStorage.removeItem("modalin_photo");
+    localStorage.removeItem("modelin_token");
+    localStorage.removeItem("modelin_page");
+    localStorage.removeItem("modelin_photo");
     setUserProfile({
       nik: "", nama: "", email: "", telepon: "", alamat: "",
       identitasUsaha: "", namaPemilik: "", jenisUsaha: "", alamatUsaha: "",
@@ -3385,7 +3388,7 @@ export default function App() {
         onComplete={(nik, nama, email) => {
           setUserProfile((p) => ({ ...p, nik, nama, email }));
           setPage("profile");
-          localStorage.setItem("modalin_page", "profile");
+          localStorage.setItem("modelin_page", "profile");
           setShowProfileWarning(false);
         }}
       />
@@ -3410,13 +3413,13 @@ export default function App() {
                 const reader = new FileReader();
                 reader.onload = (ev) => {
                   const base64 = ev.target?.result as string;
-                  localStorage.setItem("modalin_photo", base64);
+                  localStorage.setItem("modelin_photo", base64);
                   setPhotoUrl(base64);
                 };
                 reader.readAsDataURL(blob);
               })
               .catch(() => {
-                localStorage.setItem("modalin_photo", fotoUrl);
+                localStorage.setItem("modelin_photo", fotoUrl);
                 setPhotoUrl(fotoUrl);
               });
           }

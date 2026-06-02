@@ -94,7 +94,10 @@ export async function apiChangePassword(data: {
   oldPassword: string;
   newPassword: string;
 }) {
-  return put<{ message: string }>("/user/profile/password", data);
+  return put<{ message: string }>("/user/profile/password", {
+    passwordLama: data.oldPassword,
+    passwordBaru: data.newPassword,
+  });
 }
 
 // ── Upload ────────────────────────────────────────────────────────────────────
