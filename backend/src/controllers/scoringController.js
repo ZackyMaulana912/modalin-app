@@ -298,3 +298,119 @@ exports.getRekomendasi = async (req, res) => {
     res.status(500).json({ status: "error", message: "Terjadi kesalahan server." });
   }
 };
+
+// ══════════════════════════════════════════════════════════════════════════════
+// POST /api/scoring/shap  — SHAP Explainable AI
+// ══════════════════════════════════════════════════════════════════════════════
+exports.getShap = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+
+    if (!user.omzetBulanan || !user.pengeluaranBulanan) {
+      return res.status(400).json({
+        status: "error",
+        message: "Lengkapi data bisnis terlebih dahulu.",
+      });
+    }
+
+    const omzet       = toNumber(user.omzetBulanan);
+    const pengeluaran = toNumber(user.pengeluaranBulanan);
+    const asetRaw     = toNumber(user.totalAset);
+    const aset        = asetRaw < 100000 ? asetRaw * 1000000 : asetRaw;
+    const hutang      = toNumber(user.totalHutang);
+
+    const safeOmzet       = Math.min(Math.max(omzet, 3000000), 100000000);
+    const safePengeluaran = Math.min(Math.max(pengeluaran, 100000), safeOmzet * 3);
+    const safeAset        = Math.min(Math.max(aset, 1000000), 500000000);
+    const safeHutang      = Math.min(Math.max(hutang, 0), 50000000);
+    const safeFreq        = Math.min(Math.max(toNumber(user.frekuensiTransaksi), 1), 500);
+    const safeLama        = Math.min(Math.max(toNumber(user.lamaBerdiri), 1), 120);
+
+    const j = (user.jenisUsaha || "").toLowerCase();
+    const safeJenis =
+      j.includes("kuliner") || j.includes("makanan") ? "Bisnis Kuliner" :
+      j.includes("jasa") || j.includes("freelance")  ? "Jasa & Freelancer" :
+      j.includes("digital") || j.includes("software")? "Produk Digital" :
+      j.includes("kreatif") || j.includes("kerajinan")? "Produk Kreatif" :
+      "Toko & E-commerce";
+
+    const payload = {
+      omzet: safeOmzet, pengeluaran: safePengeluaran,
+      aset: safeAset, hutang: safeHutang,
+      freq_trx: safeFreq, lama_bln: safeLama,
+      jenis_usaha: safeJenis,
+    };
+
+    const aiResponse = await fetch(`${AI_API_URL}/shap`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    if (!aiResponse.ok) throw new Error(`SHAP API error: ${aiResponse.status}`);
+    const shapData = await aiResponse.json();
+
+    res.json({ status: "success", data: shapData });
+  } catch (error) {
+    console.error("SHAP error:", error.message);
+    res.status(500).json({ status: "error", message: "Gagal menghitung SHAP. Coba lagi." });
+  }
+};
+
+// ══════════════════════════════════════════════════════════════════════════════
+// GET /api/scoring/advisor  — Generative AI Advisor
+// ══════════════════════════════════════════════════════════════════════════════
+exports.getAdvisor = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+
+    if (!user.omzetBulanan || !user.pengeluaranBulanan) {
+      return res.status(400).json({
+        status: "error",
+        message: "Lengkapi data bisnis terlebih dahulu.",
+      });
+    }
+
+    const omzet       = toNumber(user.omzetBulanan);
+    const pengeluaran = toNumber(user.pengeluaranBulanan);
+    const asetRaw     = toNumber(user.totalAset);
+    const aset        = asetRaw < 100000 ? asetRaw * 1000000 : asetRaw;
+    const hutang      = toNumber(user.totalHutang);
+
+    const safeOmzet       = Math.min(Math.max(omzet, 3000000), 100000000);
+    const safePengeluaran = Math.min(Math.max(pengeluaran, 100000), safeOmzet * 3);
+    const safeAset        = Math.min(Math.max(aset, 1000000), 500000000);
+    const safeHutang      = Math.min(Math.max(hutang, 0), 50000000);
+    const safeFreq        = Math.min(Math.max(toNumber(user.frekuensiTransaksi), 1), 500);
+    const safeLama        = Math.min(Math.max(toNumber(user.lamaBerdiri), 1), 120);
+
+    const j = (user.jenisUsaha || "").toLowerCase();
+    const safeJenis =
+      j.includes("kuliner") || j.includes("makanan") ? "Bisnis Kuliner" :
+      j.includes("jasa") || j.includes("freelance")  ? "Jasa & Freelancer" :
+      j.includes("digital") || j.includes("software")? "Produk Digital" :
+      j.includes("kreatif") || j.includes("kerajinan")? "Produk Kreatif" :
+      "Toko & E-commerce";
+
+    const payload = {
+      omzet: safeOmzet, pengeluaran: safePengeluaran,
+      aset: safeAset, hutang: safeHutang,
+      freq_trx: safeFreq, lama_bln: safeLama,
+      jenis_usaha: safeJenis,
+    };
+
+    const aiResponse = await fetch(`${AI_API_URL}/advisor`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    if (!aiResponse.ok) throw new Error(`Advisor API error: ${aiResponse.status}`);
+    const advisorData = await aiResponse.json();
+
+    res.json({ status: "success", data: advisorData });
+  } catch (error) {
+    console.error("Advisor error:", error.message);
+    res.status(500).json({ status: "error", message: "Gagal mengambil rekomendasi AI. Coba lagi." });
+  }
+};
