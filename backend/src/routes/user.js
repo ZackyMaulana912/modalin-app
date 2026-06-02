@@ -26,8 +26,11 @@ router.put("/profile/business", updateBusiness);
 // PUT /api/user/profile/password
 router.put("/profile/password", changePassword);
 
-// PUT /api/user/profile/photo
+// PUT /api/user/profile/photo (multipart file upload)
 router.put("/profile/photo", upload.single("foto"), uploadFoto);
+
+// POST /api/user/profile/photo-base64 (JSON base64 - lebih reliable di Railway)
+router.post("/profile/photo-base64", uploadFoto);
 
 // DELETE /api/user/profile/photo
 router.delete("/profile/photo", hapusFoto);

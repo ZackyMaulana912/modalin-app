@@ -126,6 +126,28 @@ export async function apiUploadFiles(formData: FormData) {
   return request<{ message: string }>("POST", "/upload/data", formData, true);
 }
 
+export async function apiUploadFoto(file: File): Promise<{ fotoUrl: string }> {
+  // Konversi file ke base64 lalu kirim via JSON (lebih reliable di Railway - tidak ada persistent disk)
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = async () => {
+      try {
+        const base64 = reader.result as string;
+        const res = await request<{ status: string; data?: { fotoUrl?: string } }>(
+          "POST",
+          "/user/profile/photo-base64",
+          { fotoBase64: base64 },
+        );
+        resolve({ fotoUrl: (res as unknown as { data?: { fotoUrl?: string } })?.data?.fotoUrl ?? base64 });
+      } catch (err) {
+        reject(err);
+      }
+    };
+    reader.onerror = () => reject(new Error("Gagal membaca file"));
+    reader.readAsDataURL(file);
+  });
+}
+
 export async function apiGetRiwayatUpload() {
   return request<unknown>("GET", "/upload/riwayat");
 }

@@ -1797,17 +1797,22 @@ function ProfilePage({ profile, photoUrl, onPhotoChange, onUpdatePersonal, onUpd
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Konversi ke base64 supaya bisa disimpan di localStorage
     const reader = new FileReader();
     reader.onload = async (ev) => {
       const base64 = ev.target?.result as string;
+      // Tampilkan preview langsung
       onPhotoChange(base64);
       localStorage.setItem("modelin_photo", base64);
+      // Upload ke backend - simpan base64 ke MongoDB (persistent)
       try {
         const { apiUploadFoto } = await import("./services/api");
-        await apiUploadFoto(file);
+        const result = await apiUploadFoto(file);
+        if (result?.fotoUrl) {
+          onPhotoChange(result.fotoUrl);
+          localStorage.setItem("modelin_photo", result.fotoUrl);
+        }
       } catch (err) {
-        console.error("Gagal upload foto:", err);
+        console.error("Gagal upload foto ke backend:", err);
       }
     };
     reader.readAsDataURL(file);
@@ -3277,11 +3282,14 @@ export default function App() {
           .then((res: unknown) => {
             const user = (res as {data?: {user?: unknown}})?.data?.user ?? res;
             setUserProfile((p) => ({ ...p, ...(user as object) }));
-            const savedPhoto = localStorage.getItem("modelin_photo");
-            if (savedPhoto && savedPhoto.startsWith("data:image")) {
-              setPhotoUrl(savedPhoto);
-            } else if (user.fotoProfil) {
-              setPhotoUrl(`${(import.meta.env.VITE_API_BASE_URL ?? "").replace(/\/api$/, "")}/uploads/${user.fotoProfil}`);
+            const u = user as Record<string, unknown>;
+            // fotoProfil di MongoDB sudah base64, langsung pakai
+            if (u.fotoProfil && typeof u.fotoProfil === "string" && u.fotoProfil.startsWith("data:")) {
+              setPhotoUrl(u.fotoProfil as string);
+              localStorage.setItem("modelin_photo", u.fotoProfil as string);
+            } else {
+              const savedPhoto = localStorage.getItem("modelin_photo");
+              if (savedPhoto) setPhotoUrl(savedPhoto);
             }
             const savedPage = localStorage.getItem("modelin_page") as Page;
             const targetPage = savedPage || "dashboard";
@@ -3425,26 +3433,10 @@ export default function App() {
         onForgotPassword={() => setPage("forgot-password")}
         onSuccess={(user) => {
           setUserProfile((p) => ({ ...p, ...user }));
-          if (user.fotoProfil) {
-            console.log("fotoProfil dari backend:", user.fotoProfil);
-            const fotoUrl = `${(import.meta.env.VITE_API_BASE_URL ?? "").replace(/\/api$/, "")}/uploads/${user.fotoProfil}`;
-            console.log("fotoUrl:", fotoUrl);
-            // Load foto dari backend lalu simpan ke localStorage sebagai base64
-            fetch(fotoUrl)
-              .then(res => res.blob())
-              .then(blob => {
-                const reader = new FileReader();
-                reader.onload = (ev) => {
-                  const base64 = ev.target?.result as string;
-                  localStorage.setItem("modelin_photo", base64);
-                  setPhotoUrl(base64);
-                };
-                reader.readAsDataURL(blob);
-              })
-              .catch(() => {
-                localStorage.setItem("modelin_photo", fotoUrl);
-                setPhotoUrl(fotoUrl);
-              });
+          if (user.fotoProfil && typeof user.fotoProfil === "string" && user.fotoProfil.startsWith("data:")) {
+            // fotoProfil sudah base64 di MongoDB
+            localStorage.setItem("modelin_photo", user.fotoProfil);
+            setPhotoUrl(user.fotoProfil);
           }
           navigateTo("dashboard");
         }}

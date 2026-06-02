@@ -118,13 +118,29 @@ exports.changePassword = async (req, res) => {
 // ══════════════════════════════════════════════════════════════════════════════
 exports.uploadFoto = async (req, res) => {
   try {
-    if (!req.file) {
+    // Support base64 from request body (JSON) OR file upload (multipart)
+    let base64Data = null;
+
+    if (req.body && req.body.fotoBase64) {
+      // Frontend kirim base64 langsung via JSON
+      base64Data = req.body.fotoBase64;
+    } else if (req.file) {
+      // Fallback: file upload biasa, konversi ke base64
+      const fs = require("fs");
+      const fileBuffer = fs.readFileSync(req.file.path);
+      const mimeType = req.file.mimetype || "image/jpeg";
+      base64Data = `data:${mimeType};base64,${fileBuffer.toString("base64")}`;
+      // Hapus file dari disk setelah dikonversi
+      try { fs.unlinkSync(req.file.path); } catch (e) {}
+    }
+
+    if (!base64Data) {
       return res.status(400).json({ status: "error", message: "Tidak ada foto yang diupload." });
     }
 
     const user = await User.findByIdAndUpdate(
       req.user._id,
-      { fotoProfil: req.file.filename },
+      { fotoProfil: base64Data },
       { new: true }
     );
 
@@ -132,8 +148,7 @@ exports.uploadFoto = async (req, res) => {
       status: "success",
       message: "Foto profil berhasil diupdate.",
       data: {
-        fotoProfil: user.fotoProfil,
-        fotoUrl: `/uploads/${user.fotoProfil}`,
+        fotoUrl: base64Data,
       },
     });
   } catch (error) {
@@ -147,24 +162,9 @@ exports.uploadFoto = async (req, res) => {
 // ══════════════════════════════════════════════════════════════════════════════
 exports.hapusFoto = async (req, res) => {
   try {
-    const fs = require("fs");
-    const user = await User.findById(req.user._id);
-
-    // Hapus file dari disk jika ada
-    if (user.fotoProfil) {
-      const filePath = path.join(__dirname, "../../uploads", user.fotoProfil);
-      if (fs.existsSync(filePath)) {
-        fs.unlinkSync(filePath);
-      }
-    }
-
-    // Hapus dari database
+    // Hapus base64 dari database
     await User.findByIdAndUpdate(req.user._id, { fotoProfil: "" });
-
-    res.json({
-      status: "success",
-      message: "Foto profil berhasil dihapus.",
-    });
+    res.json({ status: "success", message: "Foto profil berhasil dihapus." });
   } catch (error) {
     console.error("Hapus foto error:", error);
     res.status(500).json({ status: "error", message: "Gagal menghapus foto." });
