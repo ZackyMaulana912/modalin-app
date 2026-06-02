@@ -1,149 +1,235 @@
-# ModalIn — AI Credit Scoring UMKM
+# ModalIn — AI Credit Scoring untuk UMKM
 
 > Capstone Project · Coding Camp 2026 Powered by DBS Foundation · Tim CC26-PSU259
 
-ModalIn adalah sistem *alternative credit scoring* berbasis AI untuk UMKM yang tidak memiliki riwayat perbankan formal (*thin-file borrowers*). Platform ini menganalisis data operasional bisnis secara real-time untuk menghasilkan skor kelayakan kredit yang adil dan transparan.
+ModalIn membantu UMKM yang tidak punya riwayat kredit formal (*thin-file borrowers*) mendapatkan akses permodalan lewat sistem penilaian kredit alternatif berbasis AI. Dengan menganalisis data keuangan operasional seperti omzet, pengeluaran, frekuensi transaksi, dan jenis usaha, ModalIn menghasilkan skor kredit 100–900 secara real-time beserta penjelasan yang bisa dipahami pemilik usaha.
 
 ---
 
-##  Demo
+## Demo
 
 | Layanan | URL |
 |---------|-----|
 | Frontend | https://modalin-app-eta.vercel.app |
 | Backend API | https://modalin-app-production-21a2.up.railway.app |
 | AI Model API | https://spectacular-joy-production-0e13.up.railway.app |
+| API Docs | https://spectacular-joy-production-0e13.up.railway.app/docs |
 
 ---
 
-##  Tim
+## Tim CC26-PSU259
 
-| Nama | Role |
-|------|------|
-| Zacky Maulana | Data Scientist |
-| Andy | AI Engineer |
+| Nama | Role | Tanggung Jawab |
+|------|------|----------------|
+| Zacky Maulana | Data Scientist | Dataset, EDA, model training, laporan teknis |
+| Andy | AI Engineer | FastAPI, deployment model, SHAP, Gemini AI |
+| Depa | Backend Engineer | REST API, autentikasi, database |
+| Venerdi | Frontend Engineer | UI/UX, integrasi API, Vercel deployment |
 
 ---
 
-##  Arsitektur
+## Arsitektur Sistem
 
 ```
-Frontend (Vercel)
-      ↓
-Backend API (Railway) ──→ MongoDB Atlas
-      ↓
-AI Model API (Railway)
+User (Browser)
+     │
+     ▼
+Frontend — React + Vite (Vercel)
+     │
+     ▼
+Backend API — Express.js (Railway)
+     │                    │
+     ▼                    ▼
+MongoDB Atlas      AI Model API — FastAPI + TensorFlow (Railway)
+                         │
+                         ▼
+                   Gemini AI (Google)
 ```
+
+Setiap request scoring dari frontend melewati backend terlebih dahulu. Backend memvalidasi token, menyiapkan payload dari profil user, lalu meneruskan ke AI Model API untuk prediksi. Hasilnya dikembalikan ke frontend beserta analisis SHAP dan rekomendasi Gemini.
 
 ---
 
-##  Struktur Repositori
+## Struktur Repositori
 
 ```
 modalin-app/
-├── frontend/          # React + Vite + TypeScript
-├── backend/           # Node.js + Express + MongoDB
-├── ai-engineer/       # FastAPI + TensorFlow (Credit Scoring Model)
-├── data-scientist/    # Notebook, Dataset, Laporan Teknis
-├── README.md
-└── ATTRIBUTIONS.md
+├── frontend/           # React 18 + TypeScript + Vite
+│   ├── src/
+│   │   ├── app/
+│   │   │   ├── App.tsx         # Root component, semua halaman
+│   │   │   └── services/
+│   │   │       └── api.ts      # API calls ke backend
+│   │   ├── api/                # Typed API clients
+│   │   └── assets/             # Gambar dan ikon
+│   ├── package.json
+│   └── vite.config.ts
+│
+├── backend/            # Node.js + Express.js
+│   └── src/
+│       ├── controllers/        # Logic handler tiap endpoint
+│       ├── models/             # Mongoose schema
+│       ├── routes/             # Definisi route API
+│       ├── middleware/         # Auth JWT, file upload
+│       └── index.js            # Entry point
+│
+├── ai-engineer/        # FastAPI + TensorFlow
+│   ├── main.py                 # Endpoints: /predict, /shap, /advisor
+│   ├── model/                  # File model .keras dan scaler
+│   └── requirements.txt
+│
+├── data-scientist/     # Python notebooks dan dataset
+│   ├── notebook.ipynb          # Training, EDA, A/B testing
+│   ├── dataset_modalin_clean.csv
+│   └── app.py                  # Streamlit dashboard
+│
+└── README.md
 ```
 
 ---
 
-##  Teknologi
+## Stack Teknologi
 
 **Frontend**
 - React 18, TypeScript, Vite
 - Tailwind CSS, shadcn/ui, Framer Motion
-- Deploy: Vercel
+- Hosting: Vercel (auto-deploy dari GitHub)
 
 **Backend**
-- Node.js, Express.js
-- MongoDB Atlas, Mongoose
-- JWT Authentication, Multer (file upload)
-- Deploy: Railway
+- Node.js 18, Express.js
+- MongoDB Atlas, Mongoose ODM
+- JWT untuk autentikasi, Multer untuk upload file
+- Hosting: Railway
 
 **AI Model**
-- TensorFlow / Keras (Custom Neural Network)
+- TensorFlow 2.x / Keras — custom neural network untuk credit scoring
+- SHAP (KernelExplainer) — explainable AI
+- Google Gemini API — rekomendasi finansial berbasis generative AI
 - FastAPI, Uvicorn
-- Pipeline: Data → Feature Engineering → Model → Credit Score
-- Deploy: Railway
+- Hosting: Railway
 
-**Data Scientist**
-- Python, Pandas, Scikit-learn
-- Dataset sintetis 998 data UMKM
-- EDA, A/B Testing, Laporan Teknis
+**Data**
+- Python, Pandas, NumPy, Scikit-learn
+- Dataset sintetis 998 data UMKM Indonesia
+- Teknik: SMOTE untuk balancing, A/B testing model
 
 ---
 
-##  Cara Menjalankan Lokal
+## Menjalankan di Lokal
 
-### Frontend
+Pastikan sudah install: Node.js 18+, Python 3.10+, dan MongoDB Atlas URI (atau MongoDB lokal).
+
+### 1. Clone repo
+
 ```bash
-cd frontend
-npm install
-cp .env.example .env
-# Isi VITE_API_URL di .env
-npm run dev
+git clone https://github.com/ZackyMaulana912/modalin-app.git
+cd modalin-app
 ```
 
-### Backend
+### 2. Backend
+
 ```bash
 cd backend
 npm install
 cp .env.example .env
-# Isi MONGODB_URI, JWT_SECRET, dll di .env
+```
+
+Isi file `.env`:
+
+```env
+PORT=5000
+MONGODB_URI=mongodb+srv://<user>:<password>@cluster.mongodb.net/modalin
+JWT_SECRET=rahasia_jwt_kamu
+JWT_EXPIRES_IN=7d
+EMAIL_USER=emailkamu@gmail.com
+EMAIL_PASS=app_password_gmail
+FRONTEND_URL=http://localhost:5173
+```
+
+```bash
 npm run dev
+# Backend berjalan di http://localhost:5000
 ```
 
-### AI Model
+### 3. AI Model
+
 ```bash
-cd ai-engineer
+cd ../ai-engineer
 pip install -r requirements.txt
-uvicorn main:app --reload
 ```
 
-### Data Scientist (Streamlit Dashboard)
+Buat file `.env` di folder `ai-engineer/`:
+
+```env
+GEMINI_API_KEY=your_gemini_api_key
+```
+
 ```bash
-cd data-scientist
+uvicorn main:app --reload --port 8000
+# AI API berjalan di http://localhost:8000
+# Docs: http://localhost:8000/docs
+```
+
+### 4. Frontend
+
+```bash
+cd ../frontend
+npm install
+```
+
+Buat file `.env` di folder `frontend/`:
+
+```env
+VITE_API_BASE_URL=http://localhost:5000
+```
+
+> Catatan: Kalau backend berjalan di port berbeda, sesuaikan URL-nya.
+
+```bash
+npm run dev
+# Frontend berjalan di http://localhost:5173
+```
+
+### 5. Data Scientist (opsional)
+
+```bash
+cd ../data-scientist
 pip install -r requirements.txt
 streamlit run app.py
+# Dashboard berjalan di http://localhost:8501
 ```
 
 ---
 
-##  Environment Variables
+## Alur Penggunaan
 
-### Backend (`.env`)
-```
-PORT=5000
-MONGODB_URI=mongodb+srv://...
-JWT_SECRET=...
-JWT_EXPIRES_IN=7d
-EMAIL_USER=...
-EMAIL_PASS=...
-FRONTEND_URL=https://modalin-app-eta.vercel.app
-```
-
-### Frontend (`.env`)
-```
-VITE_API_URL=https://modalin-app-production-21a2.up.railway.app/api
-```
+1. **Daftar** — buat akun dengan NIK, nama, dan email
+2. **Lengkapi profil bisnis** — isi data usaha seperti omzet, pengeluaran, jenis usaha, lama berdiri
+3. **Upload mutasi rekening** — opsional, untuk ekstraksi data keuangan otomatis (PDF/CSV/XLS)
+4. **Lihat skor kredit** — sistem menghitung skor 100–900 berdasarkan model AI
+5. **Baca analisis** — halaman AI Advisor menampilkan penjelasan SHAP dan rekomendasi dari Gemini
+6. **Pantau anomali** — sistem mendeteksi pola mencurigakan di arus kas secara otomatis
 
 ---
 
-##  Fitur Utama
+## Endpoint API Utama
 
-- **AI Credit Scoring** — Skor kredit 100–900 berbasis model neural network
-- **Analisis 4C** — Character, Capacity, Capital, Condition
-- **Deteksi Anomali** — 7 jenis anomali arus kas terdeteksi otomatis
-- **Rekomendasi** — Rencana aksi finansial yang dipersonalisasi
-- **Upload Mutasi** — Analisis PDF mutasi rekening bank
-- **Gamifikasi** — Sistem poin untuk mendorong kelengkapan data
+| Method | Endpoint | Deskripsi |
+|--------|----------|-----------|
+| POST | `/api/auth/register` | Daftar akun baru |
+| POST | `/api/auth/login` | Login dan dapatkan token |
+| GET | `/api/user/profile` | Ambil profil user |
+| PUT | `/api/user/profile/personal` | Update info pribadi |
+| PUT | `/api/user/profile/business` | Update info bisnis |
+| POST | `/api/upload/data` | Upload file mutasi |
+| GET | `/api/scoring` | Hitung dan ambil skor kredit |
+| GET | `/api/scoring/anomali` | Deteksi anomali arus kas |
+| GET | `/api/scoring/rekomendasi` | Rekomendasi produk pinjaman |
+| POST | `/api/scoring/shap` | Analisis kontribusi fitur (SHAP) |
+| POST | `/api/scoring/advisor` | Rekomendasi AI via Gemini |
 
 ---
 
-##  Lisensi
+## Lisensi
 
-Proyek ini dibuat untuk keperluan akademik Coding Camp 2026 DBS Foundation.
+Dibuat untuk keperluan akademik Coding Camp 2026 Powered by DBS Foundation. Tidak untuk penggunaan komersial.
