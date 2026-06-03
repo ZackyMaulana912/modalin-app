@@ -1876,6 +1876,8 @@ function ProfilePage({ profile, photoUrl, onPhotoChange, onUpdatePersonal, onUpd
       )}
 
       <main className="flex-1 px-4 md:px-10 py-6 md:py-8 overflow-y-auto min-w-0">
+        <h1 className="font-['Plus_Jakarta_Sans',sans-serif] font-bold text-[40px] tracking-[-0.4px] text-[#001038] mb-6">
+          Profil &amp; Manajemen Data
         </h1>
 
         {showCompletionWarning && (
