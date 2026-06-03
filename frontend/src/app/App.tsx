@@ -1371,9 +1371,9 @@ function DashboardPage({ profile, onCairanDana, onBayarTagihan, onNavigate, loan
 
   const scoringRows = showAllScoring ? allScoringRows : allScoringRows.slice(0, 3);
   return (
-    <div className="flex h-screen overflow-hidden bg-[#f8f9ff]">
+    <div className="flex h-screen overflow-hidden bg-[#f8f9ff] relative">
       <DashboardSidebar activePage="dashboard" onNavigate={onNavigate} onLogout={onLogout} />
-      <main className="flex-1 px-10 py-8 overflow-y-auto">
+      <main className="flex-1 px-4 md:px-10 py-6 md:py-8 overflow-y-auto min-w-0">
         <DashboardHeader profile={profile} onNavigate={onNavigate} photoUrl={photoUrl} />
 
         {/* Stat cards row */}
@@ -1565,9 +1565,9 @@ function CairanDanaPage({ onBack, onNavigate, onConfirmLoan, profile, onLogout }
   const rowValue = `${font} font-medium text-[16px] text-[#001038]`;
 
   return (
-    <div className="flex h-screen overflow-hidden bg-[#f8f9ff]">
+    <div className="flex h-screen overflow-hidden bg-[#f8f9ff] relative">
       <DashboardSidebar activePage="dashboard" onNavigate={onNavigate} onLogout={onLogout} />
-      <main className="flex-1 px-10 py-8 overflow-y-auto">
+      <main className="flex-1 px-4 md:px-10 py-6 md:py-8 overflow-y-auto min-w-0">
         <div className="max-w-[672px]">
           <div className="bg-white rounded-[12px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] overflow-hidden flex flex-col">
             {/* Header */}
@@ -1702,9 +1702,9 @@ function BayarTagihanPage({ loanData, onBack, onNavigate, onClearLoan, onPayInst
   const rowValue = `${font} font-medium text-[16px] text-[#001038]`;
 
   return (
-    <div className="flex h-screen overflow-hidden bg-[#f8f9ff]">
+    <div className="flex h-screen overflow-hidden bg-[#f8f9ff] relative">
       <DashboardSidebar activePage="dashboard" onNavigate={onNavigate} onLogout={onLogout} />
-      <main className="flex-1 px-10 py-8 overflow-y-auto">
+      <main className="flex-1 px-4 md:px-10 py-6 md:py-8 overflow-y-auto min-w-0">
         <div className="max-w-[672px]">
           <div className="bg-white rounded-[12px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] overflow-hidden flex flex-col">
             {/* Header */}
@@ -1833,6 +1833,7 @@ function ProfilePage({ profile, photoUrl, onPhotoChange, onUpdatePersonal, onUpd
   const [editingPassword, setEditingPassword] = useState(false);
   const [uploadLoading, setUploadLoading] = useState(false);
   const [uploadMsg, setUploadMsg] = useState("");
+  const [toastMsg, setToastMsg] = useState("");
   const uploadRef = useRef<HTMLInputElement>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -1866,12 +1867,15 @@ function ProfilePage({ profile, photoUrl, onPhotoChange, onUpdatePersonal, onUpd
   const cardClass = "bg-white rounded-[12px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] p-6";
 
   return (
-    <div className="flex h-screen overflow-hidden bg-[#f8f9ff]">
+    <div className="flex h-screen overflow-hidden bg-[#f8f9ff] relative">
       <DashboardSidebar activePage="profile" onNavigate={onNavigate} onLogout={onLogout} />
+      {toastMsg && (
+        <div className="fixed top-6 left-1/2 -translate-x-1/2 z-[100] bg-[#006b55] text-white font-['Plus_Jakarta_Sans',sans-serif] font-semibold text-[14px] px-6 py-3 rounded-[10px] shadow-lg animate-pulse">
+          {toastMsg}
+        </div>
+      )}
 
-      <main className="flex-1 px-10 py-8 overflow-y-auto">
-        <h1 className="font-['Plus_Jakarta_Sans',sans-serif] font-bold text-[40px] tracking-[-0.4px] text-[#001038] mb-6">
-          Profil &amp; Manajemen Data
+      <main className="flex-1 px-4 md:px-10 py-6 md:py-8 overflow-y-auto min-w-0">
         </h1>
 
         {showCompletionWarning && (
@@ -2109,14 +2113,14 @@ function ProfilePage({ profile, photoUrl, onPhotoChange, onUpdatePersonal, onUpd
         <EditPersonalInfoModal
           initial={{ nik: profile.nik, nama: profile.nama, email: profile.email, telepon: profile.telepon, alamat: profile.alamat }}
           onClose={() => setEditingPersonal(false)}
-          onSave={(data) => { onUpdatePersonal(data); setEditingPersonal(false); }}
+          onSave={(data) => { onUpdatePersonal(data); setEditingPersonal(false); setToastMsg("✅ Informasi pribadi berhasil disimpan!"); setTimeout(() => setToastMsg(""), 3000); }}
         />
       )}
       {editingBusiness && (
         <EditBusinessInfoModal
           initial={{ identitasUsaha: profile.identitasUsaha, namaPemilik: profile.namaPemilik, jenisUsaha: profile.jenisUsaha, alamatUsaha: profile.alamatUsaha, lamaBerdiri: profile.lamaBerdiri, omzetBulanan: profile.omzetBulanan, pengeluaranBulanan: profile.pengeluaranBulanan, totalHutang: profile.totalHutang, totalAset: profile.totalAset, frekuensiTransaksi: profile.frekuensiTransaksi }}
           onClose={() => setEditingBusiness(false)}
-          onSave={(data) => { onUpdateBusiness(data); setEditingBusiness(false); }}
+          onSave={(data) => { onUpdateBusiness(data); setEditingBusiness(false); setToastMsg("✅ Informasi bisnis berhasil disimpan!"); setTimeout(() => setToastMsg(""), 3000); }}
         />
       )}
       {editingPassword && (
@@ -2490,9 +2494,9 @@ function HasilScoringPage({ profile, onNavigate, onLogout, photoUrl }: { profile
     { label: "Condition", score: 0, color: "#e0e0e0", barColor: "#e0e0e0", desc: "Belum ada data scoring." },
   ];
   return (
-    <div className="flex h-screen overflow-hidden bg-[#f8f9ff]">
+    <div className="flex h-screen overflow-hidden bg-[#f8f9ff] relative">
       <DashboardSidebar activePage="hasil-scoring" onNavigate={onNavigate} onLogout={onLogout} />
-      <main className="flex-1 px-10 py-8 overflow-y-auto">
+      <main className="flex-1 px-4 md:px-10 py-6 md:py-8 overflow-y-auto min-w-0">
         <DashboardHeader profile={profile} onNavigate={onNavigate} photoUrl={photoUrl} />
         <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className={`${font} font-bold text-[40px] text-[#001038] tracking-[-0.4px] mb-6`}>
           Hasil Analisis Kredit
@@ -2635,9 +2639,9 @@ function AnomaliArusKasPage({ profile, onNavigate, onLogout, photoUrl }: { profi
     : null;
 
   return (
-    <div className="flex h-screen overflow-hidden bg-[#f8f9ff]">
+    <div className="flex h-screen overflow-hidden bg-[#f8f9ff] relative">
       <DashboardSidebar activePage="anomali-arus-kas" onNavigate={onNavigate} onLogout={onLogout} />
-      <main className="flex-1 px-10 py-8 overflow-y-auto">
+      <main className="flex-1 px-4 md:px-10 py-6 md:py-8 overflow-y-auto min-w-0">
         <DashboardHeader profile={profile} onNavigate={onNavigate} photoUrl={photoUrl} />
         <h2 className={`${font} font-bold text-[40px] text-[#001038] tracking-[-0.4px] mb-1`}>Deteksi Anomali Arus Kas</h2>
         <p className={`${font} font-semibold text-[14px] text-[#44464f] mb-0.5`}>Analisis Anomali Finansial</p>
@@ -2924,9 +2928,9 @@ function RekomendasiPage({ profile, onNavigate, onLogout, photoUrl }: { profile:
   ];
 
   return (
-    <div className="flex h-screen overflow-hidden bg-[#f8f9ff]">
+    <div className="flex h-screen overflow-hidden bg-[#f8f9ff] relative">
       <DashboardSidebar activePage="rekomendasi" onNavigate={onNavigate} onLogout={onLogout} />
-      <main className="flex-1 px-10 py-8 overflow-y-auto">
+      <main className="flex-1 px-4 md:px-10 py-6 md:py-8 overflow-y-auto min-w-0">
         <DashboardHeader profile={profile} onNavigate={onNavigate} photoUrl={photoUrl} />
         <h2 className={`${font} font-bold text-[40px] text-[#001038] tracking-[-0.4px] mb-1`}>Rencana Aksi Finansial Anda</h2>
         <p className={`${font} font-normal text-[16px] text-[#44464f] mb-6`}>Dipersonalisasi oleh AI Advisor</p>
@@ -2982,7 +2986,7 @@ function RekomendasiPage({ profile, onNavigate, onLogout, photoUrl }: { profile:
                 </div>
                 <div className="flex items-center gap-3 shrink-0">
                   <span className={`${font} font-semibold text-[13px] text-[#a16207] bg-[rgba(254,249,195,0.8)] border border-[#fbbf24] rounded-[6px] px-4 py-2 tracking-[0.3px]`}>
-                    🔒 Fitur Mendatang
+                    Fitur Mendatang
                   </span>
                 </div>
               </motion.div>
@@ -3094,9 +3098,9 @@ function AiAdvisorPage({ profile, onNavigate, onLogout }: { profile: UserProfile
   };
 
   return (
-    <div className="flex h-screen overflow-hidden bg-[#f8f9ff]">
+    <div className="flex h-screen overflow-hidden bg-[#f8f9ff] relative">
       <DashboardSidebar activePage="ai-advisor" onNavigate={onNavigate} onLogout={onLogout} />
-      <main className="flex-1 px-10 py-8 overflow-y-auto">
+      <main className="flex-1 px-4 md:px-10 py-6 md:py-8 overflow-y-auto min-w-0">
         {/* Header */}
         <DashboardHeader profile={profile} onNavigate={onNavigate} />
 
