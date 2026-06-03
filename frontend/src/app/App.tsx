@@ -737,6 +737,18 @@ function LoginPage({ onRegister, onForgotPassword, onSuccess }: { onRegister: ()
 
 // ── Sidebar nav ──────────────────────────────────────────────────────────────
 function DashboardSidebar({ activePage, onNavigate, onLogout }: { activePage?: string; onNavigate?: (page: Page) => void; onLogout?: () => void }) {
+  const [collapsed, setCollapsed] = useState<boolean>(() => {
+    try { return localStorage.getItem("modalin_sidebar_collapsed") === "true"; } catch { return false; }
+  });
+
+  const toggleCollapsed = () => {
+    setCollapsed(prev => {
+      const next = !prev;
+      try { localStorage.setItem("modalin_sidebar_collapsed", String(next)); } catch {}
+      return next;
+    });
+  };
+
   const navItems = [
     { icon: imgNavHome, label: "Dashboard", page: "dashboard" as Page },
     { icon: imgNavScoring, label: "Hasil Scoring", page: "hasil-scoring" as Page },
@@ -752,44 +764,75 @@ function DashboardSidebar({ activePage, onNavigate, onLogout }: { activePage?: s
     "ai-advisor": "ai-advisor",
   };
   return (
-    <aside className="w-[311px] bg-[#2f6ab7] flex flex-col shrink-0 sticky top-0 h-screen">
-      <div className="flex-1 flex flex-col gap-1 overflow-y-auto">
-        <div className="px-6 pt-[30px] pb-4">
-          <div className="bg-white rounded-[12px] px-3 py-2 flex items-center justify-center">
-            <img src={imgLogo} alt="ModalIn" className="h-[47px] w-full object-contain" />
-          </div>
+    <aside
+      className="bg-[#2f6ab7] flex flex-col shrink-0 sticky top-0 h-screen transition-all duration-300 ease-in-out"
+      style={{ width: collapsed ? "72px" : "311px" }}
+    >
+      {/* Toggle button */}
+      <button
+        onClick={toggleCollapsed}
+        className="absolute -right-3 top-8 z-10 bg-white border border-[#c5c6d0] rounded-full size-6 flex items-center justify-center shadow-md hover:bg-[#f0f4ff] transition-colors"
+        title={collapsed ? "Buka sidebar" : "Tutup sidebar"}
+      >
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="#2f6ab7"
+          style={{ transform: collapsed ? "rotate(0deg)" : "rotate(180deg)", transition: "transform 0.3s" }}>
+          <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
+        </svg>
+      </button>
+
+      <div className="flex-1 flex flex-col gap-1 overflow-y-auto overflow-x-hidden">
+        {/* Logo */}
+        <div className={`px-3 pt-[30px] pb-4 ${collapsed ? "px-2" : "px-6"}`}>
+          {collapsed ? (
+            <div className="bg-white rounded-[10px] p-2 flex items-center justify-center">
+              <img src={imgLogo} alt="ModalIn" className="h-[28px] w-[28px] object-contain" />
+            </div>
+          ) : (
+            <div className="bg-white rounded-[12px] px-3 py-2 flex items-center justify-center">
+              <img src={imgLogo} alt="ModalIn" className="h-[47px] w-full object-contain" />
+            </div>
+          )}
         </div>
-        <p className="text-white text-[14px] font-semibold tracking-[0.7px] uppercase font-['Plus_Jakarta_Sans',sans-serif] pl-[66px] pb-6">
-          UMKM CREDIT SCORING
-        </p>
+        {!collapsed && (
+          <p className="text-white text-[14px] font-semibold tracking-[0.7px] uppercase font-['Plus_Jakarta_Sans',sans-serif] pl-[66px] pb-6">
+            UMKM CREDIT SCORING
+          </p>
+        )}
+        {collapsed && <div className="pb-4" />}
+
         {navItems.map(({ icon, label, page }) => {
           const isActive = activePage === activePages[page];
           return (
             <div
               key={label}
               onClick={() => onNavigate?.(page)}
-              className={`flex items-center gap-5 py-[18px] mx-3 px-4 rounded-[8px] cursor-pointer transition-all ${isActive
+              title={collapsed ? label : undefined}
+              className={`flex items-center gap-5 py-[18px] mx-2 px-3 rounded-[8px] cursor-pointer transition-all ${isActive
                 ? "bg-gradient-to-r from-[#00D4AA] to-[#00B08E]"
                 : "hover:bg-white/10"
-                }`}
+                } ${collapsed ? "justify-center" : ""}`}
             >
               <img src={icon} alt="" className="size-[30px] object-contain shrink-0" />
-              <span className="text-white font-semibold text-[20px] tracking-[0.7px] font-['Plus_Jakarta_Sans',sans-serif]">{label}</span>
+              {!collapsed && (
+                <span className="text-white font-semibold text-[20px] tracking-[0.7px] font-['Plus_Jakarta_Sans',sans-serif] whitespace-nowrap">{label}</span>
+              )}
             </div>
           );
         })}
       </div>
-      <div className="px-3 pb-6 pt-3 border-t border-white/20">
+
+      <div className={`px-2 pb-6 pt-3 border-t border-white/20`}>
         <button
           onClick={onLogout}
-          className="flex items-center gap-4 w-full py-[14px] mx-0 px-4 rounded-[8px] hover:bg-white/10 transition-all cursor-pointer"
+          title={collapsed ? "Keluar" : undefined}
+          className={`flex items-center gap-4 w-full py-[14px] px-3 rounded-[8px] hover:bg-white/10 transition-all cursor-pointer ${collapsed ? "justify-center" : ""}`}
         >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="shrink-0">
             <path d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             <path d="M16 17L21 12L16 7" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             <path d="M21 12H9" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
-          <span className="text-white font-semibold text-[20px] tracking-[0.7px] font-['Plus_Jakarta_Sans',sans-serif]">Keluar</span>
+          {!collapsed && <span className="text-white font-semibold text-[20px] tracking-[0.7px] font-['Plus_Jakarta_Sans',sans-serif]">Keluar</span>}
         </button>
       </div>
     </aside>
@@ -2938,37 +2981,9 @@ function RekomendasiPage({ profile, onNavigate, onLogout, photoUrl }: { profile:
                   <p className={`${font} font-normal text-[15px] text-[#44464f] leading-[24px] mt-1 max-w-[600px]`}>{desc}</p>
                 </div>
                 <div className="flex items-center gap-3 shrink-0">
-                  <button
-                    onClick={() => {
-                      setConnected(prev => {
-                        const next = { ...prev, [id]: !prev[id] };
-                        localStorage.setItem("modalin_rekomendasi_connected", JSON.stringify(next));
-                        if (!prev[id]) {
-                          const pts = parseInt(credit.replace(/\D/g, "")) || 5;
-                          setBonusTotal(b => {
-                            const newBonus = b + pts;
-                            localStorage.setItem("modalin_bonus_total", String(newBonus));
-                            return newBonus;
-                          });
-                          showToast("Skor meningkat " + credit + " poin! 🎉");
-                        } else {
-                          const pts = parseInt(credit.replace(/\D/g, "")) || 5;
-                          setBonusTotal(b => {
-                            const newBonus = Math.max(0, b - pts);
-                            localStorage.setItem("modalin_bonus_total", String(newBonus));
-                            return newBonus;
-                          });
-                        }
-                        return next;
-                      });
-                    }}
-                    className={`${font} font-semibold text-[15px] text-white rounded-[6px] px-5 py-2 shadow transition-colors ${isDone ? "bg-[#006b55]" : "bg-[#2f6ab7] hover:bg-[#1e5aa0]"}`}
-                  >
-                    Hubungkan
-                  </button>
-                  <div className={`size-[32px] rounded-[4px] border-2 flex items-center justify-center transition-colors ${isDone ? "bg-[#328777] border-[#328777]" : "border-[#c5c6d0]"}`}>
-                    {isDone && <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" /></svg>}
-                  </div>
+                  <span className={`${font} font-semibold text-[13px] text-[#a16207] bg-[rgba(254,249,195,0.8)] border border-[#fbbf24] rounded-[6px] px-4 py-2 tracking-[0.3px]`}>
+                    🔒 Fitur Mendatang
+                  </span>
                 </div>
               </motion.div>
             );
