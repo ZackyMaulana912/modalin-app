@@ -14,6 +14,7 @@ ModalIn membantu UMKM yang tidak punya riwayat kredit formal (*thin-file borrowe
 | Backend API | https://modalin-app-production-21a2.up.railway.app |
 | AI Model API | https://spectacular-joy-production-0e13.up.railway.app |
 | API Docs | https://spectacular-joy-production-0e13.up.railway.app/docs |
+| Analisis DS | https://capstone-project-modalln-data-scientist-ccxbzubf5armtd26gviehr.streamlit.app |
 
 ---
 
