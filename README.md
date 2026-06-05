@@ -1,4 +1,4 @@
-# ModalIn 🚀
+# ModalIn 
 
 **Transformasi Inklusi Finansial UMKM melalui Alternative Credit Scoring Berbasis AI dan Deteksi Anomali Arus Kas**
 
@@ -9,7 +9,7 @@
 
 ---
 
-## 📌 Tentang Proyek
+##  Tentang Proyek
 
 ModalIn adalah platform web alternative credit scoring yang dirancang khusus untuk UMKM Indonesia. Jutaan pelaku UMKM generasi muda ditolak pinjaman bukan karena bisnis mereka tidak layak, tapi karena sistem kredit konvensional masih bergantung pada riwayat bank formal yang mereka tidak miliki.
 
@@ -22,21 +22,21 @@ Selaras dengan **POJK No. 29/2024** tentang Alternative Credit Scoring (Innovati
 
 ---
 
-## ✨ Fitur Utama
+##  Fitur Utama
 
 | Fitur | Deskripsi |
 |-------|-----------|
-| 🧠 AI Credit Scoring | Neural Network (Keras) menghasilkan skor 100–900 berbasis framework 4C |
-| 🚨 Deteksi Anomali | 7 jenis anomali arus kas terdeteksi secara real-time |
-| 📊 Dashboard Interaktif | Visualisasi skor kredit dengan breakdown Character, Capacity, Capital, Condition |
-| 📄 Upload PDF Mutasi | Upload laporan mutasi rekening untuk analisis finansial |
-| 🔐 Keamanan OTP | Autentikasi berlapis dengan OTP via email |
-| 🎮 Gamifikasi Poin | Sistem poin untuk mendorong kelengkapan profil UMKM |
-| 🤖 AI Advisor | Rencana aksi finansial yang dipersonalisasi |
+|  AI Credit Scoring | Neural Network (Keras) menghasilkan skor 100–900 berbasis framework 4C |
+|  Deteksi Anomali | 7 jenis anomali arus kas terdeteksi secara real-time |
+|  Dashboard Interaktif | Visualisasi skor kredit dengan breakdown Character, Capacity, Capital, Condition |
+|  Upload PDF Mutasi | Upload laporan mutasi rekening untuk analisis finansial |
+|  Keamanan OTP | Autentikasi berlapis dengan OTP via email |
+|  Gamifikasi Poin | Sistem poin untuk mendorong kelengkapan profil UMKM |
+|  AI Advisor | Rencana aksi finansial yang dipersonalisasi |
 
 ---
 
-## 🏗️ Arsitektur Sistem
+##  Arsitektur Sistem
 
 ```
 ┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
@@ -50,7 +50,7 @@ Selaras dengan **POJK No. 29/2024** tentang Alternative Credit Scoring (Innovati
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 ### Frontend
 - React 18 + Vite + TypeScript
@@ -112,7 +112,7 @@ modalin-app/
 
 ---
 
-## 🚀 Cara Menjalankan Lokal
+##  Cara Menjalankan Lokal
 
 ### Prerequisites
 - Node.js >= 18
@@ -162,7 +162,7 @@ streamlit run app.py
 
 ---
 
-## 🌐 Live URLs
+##  Live URLs
 
 | Service | URL |
 |---------|-----|
@@ -171,7 +171,7 @@ streamlit run app.py
 
 ---
 
-## 📊 Model AI
+##  Model AI
 
 - **Arsitektur:** Custom Keras Neural Network dengan `CreditScoringLayer`
 - **Input:** 5 fitur (omzet, pengeluaran, frekuensi transaksi, total aset, lama usaha)
@@ -181,18 +181,17 @@ streamlit run app.py
 
 ---
 
-## 👥 Tim
+##  Tim
 
 | Nama | ID | Role |
 |------|----|------|
 | Andy Bagus Oesmadi | CACC863D6Y2202 | AI Engineer |
-| Rayhan Lauzzadani | CFCC004D6Y1942 | Full Stack Developer (Backend) |
-| Dwi Ratna Susanti | CFCC525D6X0231 | Full Stack Developer (Frontend) |
+| Andy Bagus Oesmad | CFCC004D6Y1942 | Full Stack Developer (Backend) |
+| Zacky Maulana | CFCC525D6X0231 | Full Stack Developer (Frontend) |
 | Zacky Maulana | CDCC863D6Y1039 | Data Scientist |
-| Lutfiah Maharani | CDCC180D6X1934 | Data Scientist |
 
 ---
 
-## 📄 Lisensi
+##  Lisensi
 
 Proyek ini dibuat untuk keperluan Capstone Project Coding Camp 2026 powered by DBS Foundation.
