@@ -30,7 +30,6 @@ Selaras dengan **POJK No. 29/2024** tentang Alternative Credit Scoring (Innovati
 |  Deteksi Anomali | 7 jenis anomali arus kas terdeteksi secara real-time |
 |  Dashboard Interaktif | Visualisasi skor kredit dengan breakdown Character, Capacity, Capital, Condition |
 |  Upload PDF Mutasi | Upload laporan mutasi rekening untuk analisis finansial |
-|  Keamanan OTP | Autentikasi berlapis dengan OTP via email |
 |  Gamifikasi Poin | Sistem poin untuk mendorong kelengkapan profil UMKM |
 |  AI Advisor | Rencana aksi finansial yang dipersonalisasi |
 
