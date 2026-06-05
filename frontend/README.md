@@ -134,7 +134,6 @@ Vercel otomatis rebuild setiap ada push ke `main`. Pastikan environment variable
 | Nama | Role |
 |------|------|
 | Andy Bagus Oesmadi | AI Engineer |
-| Rayhan Lauzzadani | Full Stack Developer (Backend) |
-| Dwi Ratna Susanti | Full Stack Developer (Frontend) |
+| Andy Bagus Oesmadi | Full Stack Developer (Backend) |
+| Zacky Maulana | Full Stack Developer (Frontend) |
 | Zacky Maulana | Data Scientist |
-| Lutfiah Maharani | Data Scientist |
