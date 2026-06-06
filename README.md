@@ -185,12 +185,33 @@ streamlit run app.py
 | Nama | ID | Role |
 |------|----|------|
 | Andy Bagus Oesmadi | CACC863D6Y2202 | AI Engineer |
-| Andy Bagus Oesmad | CFCC004D6Y1942 | Full Stack Developer (Backend) |
-| Zacky Maulana | CFCC525D6X0231 | Full Stack Developer (Frontend) |
+| Andy Bagus Oesmadi | CACC863D6Y2202 | Full Stack Developer (Backend) |
+| Zacky Maulana | CDCC863D6Y1039 | Full Stack Developer (Frontend) |
 | Zacky Maulana | CDCC863D6Y1039 | Data Scientist |
 
 ---
 
-##  Lisensi
+## 🤝 Kontribusi
+
+Kami menerima kontribusi untuk pengembangan platform **ModalIn**. Silakan ikuti langkah-langkah di bawah ini untuk mulai berkontribusi:
+
+1. **Fork** repository ini ke akun GitHub Anda.
+2. Buat branch baru untuk fitur atau perbaikan Anda:
+   ```bash
+   git checkout -b feature/NamaFitur
+   ```
+3. Lakukan commit pada perubahan Anda dengan pesan commit yang jelas:
+   ```bash
+   git commit -m "feat: deskripsi singkat fitur baru"
+   ```
+4. Push ke branch Anda di GitHub fork:
+   ```bash
+   git push origin feature/NamaFitur
+   ```
+5. Buat **Pull Request (PR)** dari fork Anda ke branch `main` repositori asli.
+
+---
+
+## 📄 Lisensi
 
 Proyek ini dibuat untuk keperluan Capstone Project Coding Camp 2026 powered by DBS Foundation.
