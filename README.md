@@ -182,12 +182,12 @@ streamlit run app.py
 
 ##  Tim
 
-| Nama | ID | Role |
-|------|----|------|
-| Andy Bagus Oesmadi | CACC863D6Y2202 | AI Engineer |
-| Andy Bagus Oesmadi | CACC863D6Y2202 | Full Stack Developer (Backend) |
-| Zacky Maulana | CDCC863D6Y1039 | Full Stack Developer (Frontend) |
-| Zacky Maulana | CDCC863D6Y1039 | Data Scientist |
+| Nama | Role |
+|------|------|
+| Andy Bagus Oesmadi| AI Engineer |
+| Vlahadiqa Runayasha Khandeva Wardana | Full Stack Developer (Backend) |
+| Venerdi Dinarsa Narendra Putra | Full Stack Developer (Frontend) |
+| Zacky Maulana | Data Scientist |
 
 ---
 
