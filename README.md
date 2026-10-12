@@ -182,10 +182,10 @@ streamlit run app.py
 
 ##  Tim
 
-| Nama | ID | Role |
+| Nama | Role |
 |------|------|
-| Andy Bagus Oesmadi |  AI Engineer |
-| Vlahadiqa Runayasha Khandeva Wardana |  Full Stack Developer (Backend) |
+| Andy Bagus Oesmadi | AI Engineer |
+| Vlahadiqa Runayasha Khandeva Wardana | Full Stack Developer (Backend) |
 | Venerdi Dinarsa Narendra Putra | Full Stack Developer (Frontend) |
 | Zacky Maulana | Data Scientist |
 
